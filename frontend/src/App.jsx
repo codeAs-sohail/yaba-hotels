@@ -17,11 +17,12 @@ function App() {
           {/* Root redirects to /home */}
           <Route path="/" element={<Navigate to="/home" replace />} />
 
-          {/* Home Route with nested Owner Login child route */}
-          <Route path="home">
-            <Route index element={<Home />} />
-            <Route path="Yaba7qK29700rest" element={<OwnerLogin />} />
-          </Route>
+          {/* Home Route */}
+          <Route path="home" element={<Home />} />
+
+          {/* Owner Login Secret Route (direct top-level route) */}
+          <Route path="Yaba7qK29700rest" element={<OwnerLogin />} />
+          <Route path="home/Yaba7qK29700rest" element={<OwnerLogin />} />
 
           {/* Customer Menu Flow */}
           <Route path="menu" element={<CustomerMenu />} />
