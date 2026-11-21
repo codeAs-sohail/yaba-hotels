@@ -94,11 +94,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database configuration
 # Supports DATABASE_URL for PostgreSQL (Supabase / Render / Railway) with SQLite local fallback
-database_url = os.getenv("DATABASE_URL")
-if database_url:
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
     DATABASES = {
         "default": dj_database_url.config(
-            default=database_url,
+            default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
         )
