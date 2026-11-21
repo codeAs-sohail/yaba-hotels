@@ -1,0 +1,9 @@
+{
+  "name": "yaba-hotels-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Yaba Hotels Root Monorepo Helper for Render / Vercel deployments",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build && rm -rf dist && cp -r frontend/dist dist"
+  }
+}
