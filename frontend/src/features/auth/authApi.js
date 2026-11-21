@@ -1,16 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setTokens, clearTokens } from "./authSlice";
+import { getApiBaseUrl } from "../../api/config";
 
-/**
- * Base query configured with dynamic API base URL and authorization header.
- * Uses VITE_API_BASE_URL if defined (e.g. for external production API),
- * otherwise defaults to relative "/api/" (works with Vite proxy or reverse proxy).
- */
-const getApiBaseUrl = () => {
-  const envUrl = import.meta.env.VITE_API_BASE_URL;
-  if (!envUrl) return "/api/";
-  return envUrl.endsWith("/") ? envUrl : `${envUrl}/`;
-};
+export { getApiBaseUrl };
 
 const baseQuery = fetchBaseQuery({
   baseUrl: getApiBaseUrl(),
