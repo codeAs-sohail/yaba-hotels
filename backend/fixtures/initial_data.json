@@ -1,0 +1,860 @@
+[
+{
+  "model": "Hotels.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$SXSf6uhKsceUGCuqyFFD8b$HrX657wipdp7FWg6RQpOSJkVGr6GtgAw/4HygCYV4m8=",
+    "last_login": null,
+    "is_superuser": true,
+    "created_at": "2026-11-21T18:32:46.535Z",
+    "updated_at": "2026-11-21T18:34:24.187Z",
+    "email": "Mk165202@gmail.com",
+    "name": "mohsin",
+    "is_active": true,
+    "is_staff": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-21T18:37:54.363Z",
+    "updated_at": "2026-11-21T18:37:54.363Z",
+    "name": "Chicken Starters"
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-11-21T18:37:54.367Z",
+    "updated_at": "2026-11-21T18:37:54.368Z",
+    "name": "Tandoor & Grills"
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-11-21T18:37:54.372Z",
+    "updated_at": "2026-11-21T18:37:54.372Z",
+    "name": "Chicken Pieces"
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-11-21T18:37:54.376Z",
+    "updated_at": "2026-11-21T18:37:54.376Z",
+    "name": "Hyderabadi Specials"
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-11-21T18:37:54.381Z",
+    "updated_at": "2026-11-21T18:37:54.381Z",
+    "name": "Veg Starters"
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-11-21T18:37:54.386Z",
+    "updated_at": "2026-11-21T18:37:54.386Z",
+    "name": "Breads"
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-11-21T19:28:32.513Z",
+    "updated_at": "2026-11-21T19:28:32.513Z",
+    "name": "Noodles"
+  }
+},
+{
+  "model": "Hotels.category",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-11-21T19:28:32.518Z",
+    "updated_at": "2026-11-21T19:28:32.518Z",
+    "name": "Fried Rice"
+  }
+},
+{
+  "model": "Hotels.branch",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-21T19:10:40.125Z",
+    "updated_at": "2026-11-21T20:17:06.503Z",
+    "address": "Tegal Kunta, Hyderabad",
+    "location": "https://maps.google.com/?q=Yaba+Fast+Food+Tegal+Kunta+Hyderabad",
+    "phone_number": "8686278001",
+    "email": "tegalkunta@yabafastfood.com"
+  }
+},
+{
+  "model": "Hotels.branch",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-11-21T19:10:40.130Z",
+    "updated_at": "2026-11-21T20:17:28.437Z",
+    "address": "Vattepally, Hyderabad",
+    "location": "https://maps.google.com/?q=Yaba+Fast+Food+Vattepally+Hyderabad",
+    "phone_number": "9700233882",
+    "email": "vattepally@yabafastfood.com"
+  }
+},
+{
+  "model": "Hotels.branch",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-11-21T19:10:40.134Z",
+    "updated_at": "2026-11-21T20:17:43.372Z",
+    "address": "Shahalibanda, Old City, Hyderabad",
+    "location": "https://maps.google.com/?q=Yaba+Fast+Food+Shahalibanda+Hyderabad",
+    "phone_number": "+8686906552",
+    "email": "shahalibanda@yabafastfood.com"
+  }
+},
+{
+  "model": "Hotels.branch",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-11-21T19:10:40.137Z",
+    "updated_at": "2026-11-21T20:18:10.400Z",
+    "address": "Babanagar, Hyderabad",
+    "location": "https://maps.google.com/?q=Yaba+Fast+Food+Babanagar+Hyderabad",
+    "phone_number": "798911077",
+    "email": "babanagar@yabafastfood.com"
+  }
+},
+{
+  "model": "Hotels.branch",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-11-21T19:10:40.140Z",
+    "updated_at": "2026-11-21T20:18:32.798Z",
+    "address": "Phool Bagh, Hyderabad",
+    "location": "https://maps.google.com/?q=Yaba+Fast+Food+Phool+Bagh+Hyderabad",
+    "phone_number": "7981579425",
+    "email": "phoolbagh@yabafastfood.com"
+  }
+},
+{
+  "model": "Hotels.branch",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-11-21T20:57:44.584Z",
+    "updated_at": "2026-11-21T20:57:44.584Z",
+    "address": "Shahalibanda, Hyderabad",
+    "location": "https://maps.google.com/?q=Shahalibanda+Hyderabad",
+    "phone_number": "9876543212",
+    "email": "shahalibanda@yabafastfood.com"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.717Z",
+    "updated_at": "2026-11-21T20:04:35.954Z",
+    "branch": 1,
+    "category": 1,
+    "item": "Chicken 65",
+    "item_type": "full",
+    "price": "280.00",
+    "description": "Classic Hyderabad street-style spicy chicken bites tossed with fresh curry leaves, green chillies, and signature garlic seasoning.",
+    "image": "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-11-21T19:32:39.052Z",
+    "updated_at": "2026-11-21T19:32:55.275Z",
+    "branch": 2,
+    "category": 1,
+    "item": "chicago chicken",
+    "item_type": "full",
+    "price": "450.00",
+    "description": "too tasty",
+    "image": "https://dgsttpexaemtfsqdiept.supabase.co/storage/v1/object/public/menu-images/menu/5204491eaf8c_WhatsApp_Image_2026-11-21_at_12.36.10_PM.jpeg"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.945Z",
+    "updated_at": "2026-11-21T20:04:35.945Z",
+    "branch": 1,
+    "category": 1,
+    "item": "Chicken 65",
+    "item_type": "single",
+    "price": "150.00",
+    "description": "Classic Hyderabad street-style spicy chicken bites tossed with fresh curry leaves, green chillies, and signature garlic seasoning.",
+    "image": "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 9,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.963Z",
+    "updated_at": "2026-11-21T20:04:35.963Z",
+    "branch": 1,
+    "category": 1,
+    "item": "Chicken Manchurian Dry",
+    "item_type": "single",
+    "price": "160.00",
+    "description": "Crispy golden fried chicken dumplings coated in a savoury dark soya, ginger, and spring onion glaze.",
+    "image": "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 10,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.971Z",
+    "updated_at": "2026-11-21T20:04:35.971Z",
+    "branch": 1,
+    "category": 1,
+    "item": "Chicken Manchurian Dry",
+    "item_type": "full",
+    "price": "290.00",
+    "description": "Crispy golden fried chicken dumplings coated in a savoury dark soya, ginger, and spring onion glaze.",
+    "image": "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 11,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.979Z",
+    "updated_at": "2026-11-21T20:04:35.979Z",
+    "branch": 1,
+    "category": 2,
+    "item": "Tandoori Chicken",
+    "item_type": "single",
+    "price": "180.00",
+    "description": "Tender chicken marinated overnight in Kashmiri chilli, spiced hung curd, and roasted over slow charcoal.",
+    "image": "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 12,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.986Z",
+    "updated_at": "2026-11-21T20:04:35.986Z",
+    "branch": 1,
+    "category": 2,
+    "item": "Tandoori Chicken",
+    "item_type": "full",
+    "price": "340.00",
+    "description": "Tender chicken marinated overnight in Kashmiri chilli, spiced hung curd, and roasted over slow charcoal.",
+    "image": "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 13,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.995Z",
+    "updated_at": "2026-11-21T20:04:35.995Z",
+    "branch": 1,
+    "category": 2,
+    "item": "Chicken Tikka Kebab",
+    "item_type": "single",
+    "price": "170.00",
+    "description": "Boneless chicken cubes chargrilled to perfection, served with mint chutney and pickled onions.",
+    "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 14,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.004Z",
+    "updated_at": "2026-11-21T20:04:36.004Z",
+    "branch": 1,
+    "category": 2,
+    "item": "Chicken Tikka Kebab",
+    "item_type": "full",
+    "price": "310.00",
+    "description": "Boneless chicken cubes chargrilled to perfection, served with mint chutney and pickled onions.",
+    "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 15,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.013Z",
+    "updated_at": "2026-11-21T20:04:36.013Z",
+    "branch": 1,
+    "category": 3,
+    "item": "Chicken Lollipop",
+    "item_type": "single",
+    "price": "140.00",
+    "description": "Frenched chicken winglets tossed in fiery Schezwan wok sauce, garnished with toasted sesame.",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 16,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.021Z",
+    "updated_at": "2026-11-21T20:04:36.021Z",
+    "branch": 1,
+    "category": 3,
+    "item": "Chicken Lollipop",
+    "item_type": "full",
+    "price": "260.00",
+    "description": "Frenched chicken winglets tossed in fiery Schezwan wok sauce, garnished with toasted sesame.",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 17,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.030Z",
+    "updated_at": "2026-11-21T20:04:36.030Z",
+    "branch": 1,
+    "category": 4,
+    "item": "Hyderabadi Chicken Biryani",
+    "item_type": "single",
+    "price": "160.00",
+    "description": "Aromatic long-grain basmati rice layered with spiced chicken, slow-cooked in traditional dum sealed pot.",
+    "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 18,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.038Z",
+    "updated_at": "2026-11-21T20:04:36.038Z",
+    "branch": 1,
+    "category": 4,
+    "item": "Hyderabadi Chicken Biryani",
+    "item_type": "full",
+    "price": "290.00",
+    "description": "Aromatic long-grain basmati rice layered with spiced chicken, slow-cooked in traditional dum sealed pot.",
+    "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 19,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.047Z",
+    "updated_at": "2026-11-21T20:04:36.047Z",
+    "branch": 1,
+    "category": 5,
+    "item": "Paneer 65",
+    "item_type": "single",
+    "price": "130.00",
+    "description": "Crispy cottage cheese cubes tempered with South Indian curry leaves, mustard seeds, and spiced yoghurt.",
+    "image": "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 20,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.054Z",
+    "updated_at": "2026-11-21T20:04:36.054Z",
+    "branch": 1,
+    "category": 5,
+    "item": "Paneer 65",
+    "item_type": "full",
+    "price": "240.00",
+    "description": "Crispy cottage cheese cubes tempered with South Indian curry leaves, mustard seeds, and spiced yoghurt.",
+    "image": "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 21,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.062Z",
+    "updated_at": "2026-11-21T20:04:36.062Z",
+    "branch": 1,
+    "category": 5,
+    "item": "Crispy Veg Manchurian",
+    "item_type": "single",
+    "price": "110.00",
+    "description": "Minced vegetable balls crispy fried and glazed in rich garlic, soy, and cracked pepper reduction.",
+    "image": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 22,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.065Z",
+    "updated_at": "2026-11-21T20:04:36.065Z",
+    "branch": 1,
+    "category": 5,
+    "item": "Crispy Veg Manchurian",
+    "item_type": "full",
+    "price": "200.00",
+    "description": "Minced vegetable balls crispy fried and glazed in rich garlic, soy, and cracked pepper reduction.",
+    "image": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 23,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.070Z",
+    "updated_at": "2026-11-21T20:04:36.070Z",
+    "branch": 1,
+    "category": 6,
+    "item": "Butter Naan",
+    "item_type": "single",
+    "price": "35.00",
+    "description": "Traditional clay tandoor baked leavened bread brushed generously with rich melted butter.",
+    "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 24,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.078Z",
+    "updated_at": "2026-11-21T20:04:36.078Z",
+    "branch": 1,
+    "category": 6,
+    "item": "Butter Naan",
+    "item_type": "full",
+    "price": "65.00",
+    "description": "Traditional clay tandoor baked leavened bread brushed generously with rich melted butter.",
+    "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 25,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.086Z",
+    "updated_at": "2026-11-21T20:04:36.086Z",
+    "branch": 1,
+    "category": 7,
+    "item": "Chicken Hakka Noodles",
+    "item_type": "single",
+    "price": "140.00",
+    "description": "Wok-tossed noodles with shredded chicken, crunchy bell peppers, cabbage, and light sesame oil.",
+    "image": "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 26,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.096Z",
+    "updated_at": "2026-11-21T20:04:36.096Z",
+    "branch": 1,
+    "category": 7,
+    "item": "Chicken Hakka Noodles",
+    "item_type": "full",
+    "price": "250.00",
+    "description": "Wok-tossed noodles with shredded chicken, crunchy bell peppers, cabbage, and light sesame oil.",
+    "image": "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 27,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.104Z",
+    "updated_at": "2026-11-21T20:04:36.104Z",
+    "branch": 1,
+    "category": 8,
+    "item": "Chicken Schezwan Fried Rice",
+    "item_type": "single",
+    "price": "150.00",
+    "description": "Fluffy rice tossed on high flame wok with spicy house-made Schezwan paste, egg ribbons, and tender chicken.",
+    "image": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.menu",
+  "pk": 28,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.112Z",
+    "updated_at": "2026-11-21T20:04:36.112Z",
+    "branch": 1,
+    "category": 8,
+    "item": "Chicken Schezwan Fried Rice",
+    "item_type": "full",
+    "price": "270.00",
+    "description": "Fluffy rice tossed on high flame wok with spicy house-made Schezwan paste, egg ribbons, and tender chicken.",
+    "image": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.723Z",
+    "updated_at": "2026-11-21T20:04:35.958Z",
+    "branch": 1,
+    "item": 1,
+    "zomato": "https://www.zomato.com/hyderabad/order",
+    "swiggy": "https://www.swiggy.com/menu/yaba-chicken-65",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-11-21T19:32:55.281Z",
+    "updated_at": "2026-11-21T19:32:55.281Z",
+    "branch": 2,
+    "item": 7,
+    "zomato": "",
+    "swiggy": "",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.950Z",
+    "updated_at": "2026-11-21T20:04:35.950Z",
+    "branch": 1,
+    "item": 8,
+    "zomato": "https://www.zomato.com/hyderabad/order",
+    "swiggy": "https://www.swiggy.com/menu/yaba-chicken-65",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.967Z",
+    "updated_at": "2026-11-21T20:04:35.967Z",
+    "branch": 1,
+    "item": 9,
+    "zomato": "https://www.zomato.com/hyderabad/order",
+    "swiggy": "https://www.swiggy.com/menu/manchurian",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.974Z",
+    "updated_at": "2026-11-21T20:04:35.974Z",
+    "branch": 1,
+    "item": 10,
+    "zomato": "https://www.zomato.com/hyderabad/order",
+    "swiggy": "https://www.swiggy.com/menu/manchurian",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 9,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.982Z",
+    "updated_at": "2026-11-21T20:04:35.982Z",
+    "branch": 1,
+    "item": 11,
+    "zomato": "https://www.zomato.com/hyderabad/tandoori",
+    "swiggy": "",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 10,
+  "fields": {
+    "created_at": "2026-11-21T20:04:35.991Z",
+    "updated_at": "2026-11-21T20:04:35.991Z",
+    "branch": 1,
+    "item": 12,
+    "zomato": "https://www.zomato.com/hyderabad/tandoori",
+    "swiggy": "",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 11,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.000Z",
+    "updated_at": "2026-11-21T20:04:36.000Z",
+    "branch": 1,
+    "item": 13,
+    "zomato": "https://www.zomato.com/hyderabad/tikka",
+    "swiggy": "https://www.swiggy.com/menu/chicken-tikka",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 12,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.009Z",
+    "updated_at": "2026-11-21T20:04:36.009Z",
+    "branch": 1,
+    "item": 14,
+    "zomato": "https://www.zomato.com/hyderabad/tikka",
+    "swiggy": "https://www.swiggy.com/menu/chicken-tikka",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 13,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.017Z",
+    "updated_at": "2026-11-21T20:04:36.017Z",
+    "branch": 1,
+    "item": 15,
+    "zomato": "https://www.zomato.com/hyderabad/lollipop",
+    "swiggy": "https://www.swiggy.com/menu/lollipop",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 14,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.025Z",
+    "updated_at": "2026-11-21T20:04:36.025Z",
+    "branch": 1,
+    "item": 16,
+    "zomato": "https://www.zomato.com/hyderabad/lollipop",
+    "swiggy": "https://www.swiggy.com/menu/lollipop",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 15,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.035Z",
+    "updated_at": "2026-11-21T20:04:36.035Z",
+    "branch": 1,
+    "item": 17,
+    "zomato": "https://www.zomato.com/hyderabad/biryani",
+    "swiggy": "https://www.swiggy.com/menu/biryani",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 16,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.043Z",
+    "updated_at": "2026-11-21T20:04:36.043Z",
+    "branch": 1,
+    "item": 18,
+    "zomato": "https://www.zomato.com/hyderabad/biryani",
+    "swiggy": "https://www.swiggy.com/menu/biryani",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 17,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.051Z",
+    "updated_at": "2026-11-21T20:04:36.051Z",
+    "branch": 1,
+    "item": 19,
+    "zomato": "https://www.zomato.com/hyderabad/paneer-65",
+    "swiggy": "https://www.swiggy.com/menu/paneer-65",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 18,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.058Z",
+    "updated_at": "2026-11-21T20:04:36.058Z",
+    "branch": 1,
+    "item": 20,
+    "zomato": "https://www.zomato.com/hyderabad/paneer-65",
+    "swiggy": "https://www.swiggy.com/menu/paneer-65",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 19,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.074Z",
+    "updated_at": "2026-11-21T20:04:36.074Z",
+    "branch": 1,
+    "item": 23,
+    "zomato": "https://www.zomato.com/hyderabad/breads",
+    "swiggy": "https://www.swiggy.com/menu/butter-naan",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 20,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.081Z",
+    "updated_at": "2026-11-21T20:04:36.081Z",
+    "branch": 1,
+    "item": 24,
+    "zomato": "https://www.zomato.com/hyderabad/breads",
+    "swiggy": "https://www.swiggy.com/menu/butter-naan",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 21,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.092Z",
+    "updated_at": "2026-11-21T20:04:36.092Z",
+    "branch": 1,
+    "item": 25,
+    "zomato": "https://www.zomato.com/hyderabad/noodles",
+    "swiggy": "https://www.swiggy.com/menu/noodles",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 22,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.099Z",
+    "updated_at": "2026-11-21T20:04:36.099Z",
+    "branch": 1,
+    "item": 26,
+    "zomato": "https://www.zomato.com/hyderabad/noodles",
+    "swiggy": "https://www.swiggy.com/menu/noodles",
+    "ownly": "https://yabafastfood.com/order-online"
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 23,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.108Z",
+    "updated_at": "2026-11-21T20:04:36.108Z",
+    "branch": 1,
+    "item": 27,
+    "zomato": "https://www.zomato.com/hyderabad/schezwan-rice",
+    "swiggy": "https://www.swiggy.com/menu/schezwan-rice",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.onlineplatforms",
+  "pk": 24,
+  "fields": {
+    "created_at": "2026-11-21T20:04:36.116Z",
+    "updated_at": "2026-11-21T20:04:36.116Z",
+    "branch": 1,
+    "item": 28,
+    "zomato": "https://www.zomato.com/hyderabad/schezwan-rice",
+    "swiggy": "https://www.swiggy.com/menu/schezwan-rice",
+    "ownly": ""
+  }
+},
+{
+  "model": "Hotels.gallery",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.739Z",
+    "updated_at": "2026-11-21T19:15:25.739Z",
+    "image_link": "/custom-images/jabatables.peg"
+  }
+},
+{
+  "model": "Hotels.gallery",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.742Z",
+    "updated_at": "2026-11-21T19:15:25.742Z",
+    "image_link": "/carousel-images/chow-mein-fried-noodles-with-chicken-and-vegetables-generative-ai-photo.webp"
+  }
+},
+{
+  "model": "Hotels.gallery",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.745Z",
+    "updated_at": "2026-11-21T19:15:25.745Z",
+    "image_link": "/carousel-images/vegetable-fried-rice-in-bowl.webp"
+  }
+},
+{
+  "model": "Hotels.feedback",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.749Z",
+    "updated_at": "2026-11-21T19:42:54.254Z",
+    "branch": 1,
+    "stars": 5,
+    "email": "salman.khan@gmail.com",
+    "qualities": [
+      "Crispy Chicken",
+      "Fast Service",
+      "Generous Portions"
+    ],
+    "message": "Hands down the best Chicken 65 and Noodles in Hyderabad. Taste is consistent every time.",
+    "is_featured": false
+  }
+},
+{
+  "model": "Hotels.feedback",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.753Z",
+    "updated_at": "2026-11-21T19:15:25.753Z",
+    "branch": 1,
+    "stars": 4,
+    "email": "ayesha.begum@yahoo.com",
+    "qualities": [
+      "Pocket Friendly",
+      "Hygiene"
+    ],
+    "message": "Very quick takeaway and polite staff. Hot and fresh food.",
+    "is_featured": false
+  }
+},
+{
+  "model": "Hotels.feedback",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-11-21T19:15:25.756Z",
+    "updated_at": "2026-11-21T19:15:25.756Z",
+    "branch": 2,
+    "stars": 5,
+    "email": "rahul.verma@outlook.com",
+    "qualities": [
+      "Wok Taste",
+      "Authentic Spices"
+    ],
+    "message": "The Schezwan fried rice has proper street-food punch. Loved the dining tables setup.",
+    "is_featured": false
+  }
+}
+]
