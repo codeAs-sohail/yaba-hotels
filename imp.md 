@@ -1,0 +1,84 @@
+## Task: Branch Selection Page – Yaba Fast Food
+
+Implement a branch selection page for **Yaba Fast Food**, including the Django REST API and React frontend integration.
+
+### 1. Backend – Django REST Framework
+
+- Create an endpoint to retrieve all branches.
+- Use the existing `Branch` model and `BranchSerializer`.
+- Return all branch details, including:
+  - id
+  - address
+  - location
+  - phone_number
+  - email
+  - created_at
+  - updated_at
+- Use a simple DRF APIView or ViewSet, whichever fits the existing architecture.
+- Register the endpoint properly in the existing URL configuration.
+- Use the existing serializers. Do not create unnecessary custom serializer methods.
+- Ensure the endpoint returns all branches without pagination for now.
+
+### 2. Frontend – React
+
+- Create a branch selection page.
+- Integrate the backend endpoint using the existing RTK Query architecture.
+- Fetch all branches dynamically from the API. Do not hardcode branch data.
+
+### 3. UI Design – Branch Cards
+
+Display all branches as individual animated cards.
+
+**Branding:**
+- Main restaurant name: Yaba Fast Food.
+- Every card should display the same restaurant name: Yaba Fast Food.
+- The distinguishing information between cards should be their branch address.
+
+**Each card should display:**
+- Restaurant name: Yaba Fast Food.
+- Branch address (visually prominent).
+- Phone number.
+- Email address.
+- A location button/icon if a location URL exists.
+
+### 4. Card Interactions
+
+- Each branch card should be clickable.
+- On clicking a card, navigate to that specific branch's menu page.
+- Pass the branch ID through the route.
+- Example route: `/menu/:branchId`.
+- The menu page should fetch menu items belonging only to the selected branch.
+- Do not mix menu items from different branches.
+
+### 5. Visual Design
+
+Create a modern, clean restaurant branch selection interface.
+
+- Use animated cards with subtle hover effects.
+- Slight lift/scale animation on hover.
+- Smooth transitions.
+- Responsive grid layout.
+- 1 column on mobile, 2 columns on tablets, and 3 columns on desktop.
+- Use Tailwind CSS and the existing UI conventions.
+- No carousel or slider.
+- Maintain consistent spacing, typography, rounded corners, and subtle shadows.
+- Make the restaurant name visually prominent while keeping the address the main distinguishing element.
+
+### 6. Loading and Error States
+
+Implement:
+- Loading skeletons while branches are being fetched.
+- A clear error state if the API request fails.
+- An empty state if no branches exist.
+
+### 7. Important Development Instructions
+
+- First inspect the existing backend and frontend project structure.
+- Reuse existing API configuration, RTK Query setup, serializers, components, and routing.
+- Do not create duplicate API configurations.
+- Do not hardcode branch information.
+- Do not modify unrelated files or existing functionality.
+- Do not introduce TypeScript if the existing frontend uses JavaScript.
+- Use the existing Tailwind setup.
+- Keep the implementation simple, reusable, and production-conscious.
+- After implementation, list all files created or modified and briefly explain the API endpoint and frontend route.
