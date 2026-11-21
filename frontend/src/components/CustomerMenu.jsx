@@ -331,9 +331,11 @@ export default function CustomerMenu() {
 
   // Resolve current active branch
   const activeBranchId = useMemo(() => {
-    if (paramBranchId) return paramBranchId;
+    if (paramBranchId && paramBranchId !== 'undefined' && paramBranchId !== 'null') {
+      return paramBranchId;
+    }
     if (branches.length > 0) return String(branches[0].id);
-    return '1';
+    return 'all';
   }, [paramBranchId, branches]);
 
   const currentBranch = useMemo(() => {

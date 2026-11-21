@@ -11,7 +11,12 @@ export const dashboardApi = authApi.injectEndpoints({
     // ==========================================
     getMenus: builder.query({
       query: (branchId) => {
-        if (branchId && branchId !== 'all') {
+        if (
+          branchId &&
+          branchId !== 'all' &&
+          branchId !== 'undefined' &&
+          branchId !== 'null'
+        ) {
           return `menu/?branch_id=${branchId}`;
         }
         return 'menu/';

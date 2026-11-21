@@ -78,8 +78,11 @@ class MenuListCreateView(generics.ListCreateAPIView):
             .order_by('-created_at')
         )
         branch_id = self.request.query_params.get('branch_id')
-        if branch_id and branch_id != 'all':
-            queryset = queryset.filter(branch_id=branch_id)
+        if branch_id and branch_id not in ('all', 'undefined', 'null'):
+            try:
+                queryset = queryset.filter(branch_id=int(branch_id))
+            except (ValueError, TypeError):
+                queryset = queryset.none()
         return queryset
 
     @transaction.atomic
@@ -385,8 +388,11 @@ class FeedbackListView(generics.ListAPIView):
                 queryset = queryset.filter(is_featured=False)
 
         branch_id = self.request.query_params.get('branch_id')
-        if branch_id and branch_id != 'all':
-            queryset = queryset.filter(branch_id=branch_id)
+        if branch_id and branch_id not in ('all', 'undefined', 'null'):
+            try:
+                queryset = queryset.filter(branch_id=int(branch_id))
+            except (ValueError, TypeError):
+                queryset = queryset.none()
         return queryset
 
 

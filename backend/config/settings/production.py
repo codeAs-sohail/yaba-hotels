@@ -63,7 +63,19 @@ MAILERS = {
 }
 
 # Production CORS
-CORS_ALLOW_ALL_ORIGINS = False
+# Allow all origins by default in production unless CORS_ALLOWED_ORIGINS is explicitly restricted.
+# Also support regexes for common hosting domains (Render, Vercel, Netlify) and localhost.
 cors_origins_env = os.getenv("CORS_ALLOWED_ORIGINS", "")
 if cors_origins_env:
+    CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False").lower() in ("true", "1", "t")
     CORS_ALLOWED_ORIGINS = [orig.strip() for orig in cors_origins_env.split(",") if orig.strip()]
+else:
+    CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.onrender\.com$",
+    r"^https://.*\.vercel\.app$",
+    r"^https://.*\.netlify\.app$",
+    r"^http://localhost:\d+$",
+    r"^http://127\.0\.0\.1:\d+$",
+]
