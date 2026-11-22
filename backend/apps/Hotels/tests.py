@@ -280,21 +280,17 @@ class YabaFastFoodAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(data["status"], "healthy")
-        self.assertEqual(data["database"], "connected")
+        self.assertEqual(data["server"], "online")
+        self.assertEqual(data["database"], "active")
         self.assertIn("db_latency_ms", data)
-
-    def test_api_health_check_endpoint_pings_db(self):
-        response = self.client.get("/api/health/")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
-        self.assertEqual(data["status"], "healthy")
-        self.assertEqual(data["database"], "connected")
 
     def test_root_endpoint_pings_db(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
-        self.assertEqual(data["status"], "online")
-        self.assertEqual(data["database"], "connected")
+        self.assertEqual(data["status"], "healthy")
+        self.assertEqual(data["server"], "online")
+        self.assertEqual(data["database"], "active")
         self.assertIn("db_latency_ms", data)
+
 
