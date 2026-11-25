@@ -4,6 +4,7 @@ import {
   useCreateGalleryMutation,
   useUpdateGalleryMutation,
   useDeleteGalleryMutation,
+  useToggleGalleryVisibilityMutation,
 } from '../../../features/dashboard/dashboardApi';
 import { useUpload } from '../../../context/UploadContext';
 import { resolveImageUrl } from '../../../api/config';
@@ -25,16 +26,34 @@ export default function GalleryManagement() {
   const [createGallery, { isLoading: isCreating }] = useCreateGalleryMutation();
   const [updateGallery, { isLoading: isUpdating }] = useUpdateGalleryMutation();
   const [deleteGallery, { isLoading: isDeleting }] = useDeleteGalleryMutation();
+  const [toggleVisibility] = useToggleGalleryVisibilityMutation();
   const { startUpload } = useUpload();
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [replaceTarget, setReplaceTarget] = useState(null);
   const [deletingImage, setDeletingImage] = useState(null);
+  const [togglingId, setTogglingId] = useState(null);
 
   // Form states
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleToggleVisibility = async (img) => {
+    const nextVisible = img.is_visible === false ? true : false;
+    try {
+      setTogglingId(img.id);
+      await toggleVisibility({
+        id: img.id,
+        is_visible: nextVisible,
+      }).unwrap();
+      refetchGallery();
+    } catch (err) {
+      console.error('Failed to toggle gallery visibility:', err);
+    } finally {
+      setTogglingId(null);
+    }
+  };
 
   const handleOpenUpload = (target = null) => {
     setReplaceTarget(target);
@@ -161,39 +180,73 @@ export default function GalleryManagement() {
 
       {/* Image Grid */}
       {!isLoading && !isFetching && gallery.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5">
-          {gallery.map((img) => (
-            <div
-              key={img.id}
-              className="relative aspect-square rounded-2xl overflow-hidden bg-[#141414]/5 border border-[#141414]/10 shadow-xs group"
-            >
-              <img
-                src={resolveImageUrl(img.image_link)}
-                alt={`Gallery #${img.id}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+          {gallery.map((img) => {
+            const isVisible = img.is_visible !== false;
+            const isUpdating = togglingId === img.id;
 
-              {/* Action Overlays */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-2">
-                <button
-                  onClick={() => handleOpenUpload(img)}
-                  className="w-full max-w-[130px] px-3 py-1.5 rounded-lg bg-white/90 hover:bg-white text-[#141414] text-xs font-bold shadow-xs transition-colors"
-                >
-                  Replace Photo
-                </button>
-                <button
-                  onClick={() => setDeletingImage(img)}
-                  className="w-full max-w-[130px] px-3 py-1.5 rounded-lg bg-red-600/90 hover:bg-red-600 text-white text-xs font-bold shadow-xs transition-colors"
-                >
-                  Delete Photo
-                </button>
+            return (
+              <div
+                key={img.id}
+                className="bg-white rounded-2xl border border-[#141414]/10 shadow-xs overflow-hidden flex flex-col justify-between transition-all"
+              >
+                <div className="relative aspect-square overflow-hidden bg-[#141414]/5 group">
+                  <img
+                    src={resolveImageUrl(img.image_link)}
+                    alt={`Gallery #${img.id}`}
+                    className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                      !isVisible ? 'opacity-40 grayscale' : ''
+                    }`}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+
+                  {/* Action Overlays */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-2">
+                    <button
+                      onClick={() => handleOpenUpload(img)}
+                      className="w-full max-w-[130px] px-3 py-1.5 rounded-lg bg-white/90 hover:bg-white text-[#141414] text-xs font-bold shadow-xs transition-colors"
+                    >
+                      Replace Photo
+                    </button>
+                    <button
+                      onClick={() => setDeletingImage(img)}
+                      className="w-full max-w-[130px] px-3 py-1.5 rounded-lg bg-red-600/90 hover:bg-red-600 text-white text-xs font-bold shadow-xs transition-colors"
+                    >
+                      Delete Photo
+                    </button>
+                  </div>
+                </div>
+
+                {/* Simple Checkbox with Click to hide/show message */}
+                <div className="p-3 bg-white border-t border-[#141414]/8">
+                  <label
+                    htmlFor={`gallery-toggle-${img.id}`}
+                    className={`flex items-center gap-2 cursor-pointer select-none ${
+                      isUpdating ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    <input
+                      id={`gallery-toggle-${img.id}`}
+                      type="checkbox"
+                      checked={isVisible}
+                      disabled={isUpdating}
+                      onChange={() => handleToggleVisibility(img)}
+                      className="w-4 h-4 rounded border-gray-300 text-[#141414] focus:ring-[#141414] cursor-pointer"
+                    />
+                    <span className="text-xs font-medium text-gray-700">
+                      {isVisible ? 'Visible to customers' : 'Hidden from customers'}{' '}
+                      <span className="text-gray-400">
+                        (click to {isVisible ? 'hide' : 'show'})
+                      </span>
+                    </span>
+                  </label>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

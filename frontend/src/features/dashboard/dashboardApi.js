@@ -113,6 +113,18 @@ export const dashboardApi = authApi.injectEndpoints({
       invalidatesTags: [{ type: 'Gallery', id: 'LIST' }],
     }),
 
+    toggleGalleryVisibility: builder.mutation({
+      query: ({ id, is_visible }) => ({
+        url: `gallery/${id}/`,
+        method: 'PATCH',
+        body: { is_visible },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Gallery', id },
+        { type: 'Gallery', id: 'LIST' },
+      ],
+    }),
+
     // ==========================================
     // BRANCH ENDPOINTS
     // ==========================================
@@ -224,6 +236,7 @@ export const {
   useCreateGalleryMutation,
   useUpdateGalleryMutation,
   useDeleteGalleryMutation,
+  useToggleGalleryVisibilityMutation,
   useGetBranchesQuery,
   useGetBranchByIdQuery,
   useCreateBranchMutation,

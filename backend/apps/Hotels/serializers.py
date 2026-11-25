@@ -116,7 +116,7 @@ class MenuSerializer(serializers.ModelSerializer):
 class GallerySerializer(serializers.ModelSerializer):
     class Meta:
         model = Gallery
-        fields = ['id', 'image_link', 'created_at', 'updated_at']
+        fields = ['id', 'image_link', 'is_visible', 'created_at', 'updated_at']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -148,7 +148,6 @@ class FeedbackSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
         extra_kwargs = {
-            'is_featured': {'read_only': True},
             'name': {'required': False, 'allow_blank': True},
             'phone_number': {'required': False, 'allow_blank': True},
         }

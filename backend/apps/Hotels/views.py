@@ -211,11 +211,24 @@ class MenuDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class GalleryListCreateView(generics.ListCreateAPIView):
     """
-    GET /api/gallery/ - List all gallery images. Publicly accessible for showcase.
+    GET /api/gallery/ - List gallery images. Public visitors see visible images only.
     POST /api/gallery/ - Upload and save a gallery image (owners only).
     """
     serializer_class = GallerySerializer
-    queryset = Gallery.objects.order_by('-created_at')
+
+    def get_queryset(self):
+        queryset = Gallery.objects.order_by('-created_at')
+        try:
+            if not (self.request.user and self.request.user.is_authenticated):
+                return queryset.filter(is_visible=True)
+            is_visible = self.request.query_params.get('is_visible')
+            if is_visible in ['true', 'True', '1']:
+                return queryset.filter(is_visible=True)
+            elif is_visible in ['false', 'False', '0']:
+                return queryset.filter(is_visible=False)
+        except Exception:
+            pass
+        return queryset
 
     def get_permissions(self):
         if self.request.method in ['GET', 'HEAD', 'OPTIONS']:

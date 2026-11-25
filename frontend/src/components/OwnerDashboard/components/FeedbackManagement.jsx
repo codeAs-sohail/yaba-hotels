@@ -210,37 +210,28 @@ export default function FeedbackManagement() {
 
                 {/* Footer Controls */}
                 <div className="mt-4 pt-3 border-t border-[#141414]/10 space-y-2.5">
-                  {/* Interactive Checkbox */}
+                  {/* Simple Interactive Checkbox */}
                   <label
                     htmlFor={`feedback-show-${f.id}`}
-                    className={`flex items-center justify-between p-2 rounded-xl border cursor-pointer select-none transition-all ${
+                    className={`flex items-center gap-2 p-2 rounded-xl border cursor-pointer select-none transition-all ${
                       isShown
                         ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950'
                         : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100/80'
                     } ${isUpdating ? 'opacity-60 cursor-not-allowed' : ''}`}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <input
-                        id={`feedback-show-${f.id}`}
-                        type="checkbox"
-                        checked={isShown}
-                        disabled={isUpdating}
-                        onChange={() => handleToggle(f)}
-                        className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
-                      />
-                      <span className="text-xs font-bold">
-                        {isShown ? 'Shown to customers' : 'Show to customers'}
+                    <input
+                      id={`feedback-show-${f.id}`}
+                      type="checkbox"
+                      checked={isShown}
+                      disabled={isUpdating}
+                      onChange={() => handleToggle(f)}
+                      className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                    />
+                    <span className="text-xs font-medium">
+                      {isShown ? 'Visible to customers' : 'Hidden from customers'}{' '}
+                      <span className="text-gray-500">
+                        (click to {isShown ? 'hide' : 'show'})
                       </span>
-                    </div>
-
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
-                        isShown
-                          ? 'bg-emerald-200 text-emerald-800'
-                          : 'bg-gray-200 text-gray-600'
-                      }`}
-                    >
-                      {isUpdating ? 'Saving...' : isShown ? 'Visible' : 'Hidden'}
                     </span>
                   </label>
 

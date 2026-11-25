@@ -10,7 +10,8 @@ import { resolveImageUrl } from '../api/config';
  * and loading skeletons.
  */
 export default function Gallery() {
-  const { data: gallery = [], isLoading, isFetching } = useGetGalleryQuery();
+  const { data: rawGallery = [], isLoading, isFetching } = useGetGalleryQuery();
+  const gallery = rawGallery.filter((img) => img.is_visible !== false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   useEffect(() => {

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useGetBranchesQuery, useCreateFeedbackMutation } from '../features/dashboard/dashboardApi';
+import {
+  useGetBranchesQuery,
+  useCreateFeedbackMutation,
+  useGetFeedbacksQuery,
+} from '../features/dashboard/dashboardApi';
 
 const RATING_OPTIONS = [
   { value: 1, label: 'Bad' },
@@ -38,6 +42,17 @@ export default function Feedback() {
       return [];
     }
   });
+
+  const { data: featuredFeedbacks = [] } = useGetFeedbacksQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
+
+  // Approved by owner (is_featured: true) + local submission preview
+  const visibleFeedbacks = [
+    ...submittedFeedbacks.filter((s) => !featuredFeedbacks.some((f) => f.id === s.id)),
+    ...featuredFeedbacks,
+  ];
 
   useEffect(() => {
     document.title = 'Feedback | Yaba Fast Food';
@@ -367,7 +382,7 @@ export default function Feedback() {
         </div>
 
         {/* Submitted Feedback Section - Displayed Below the Form */}
-        {submittedFeedbacks.length > 0 && (
+        {visibleFeedbacks.length > 0 && (
           <section
             id="user-submitted-feedback-section"
             className="mt-16 pt-10 border-t border-[#EAE6E1]"
@@ -376,22 +391,22 @@ export default function Feedback() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 mb-2">
-                  <span>✓ Response Submitted</span>
+                  <span>✓ Customer Reviews</span>
                 </div>
                 <h2 id="submitted-feedback-heading" className="font-serif text-2xl sm:text-3xl font-bold text-[#29211C]">
-                  Your Submitted Feedback
+                  Customer Feedback & Experiences
                 </h2>
                 <p className="text-xs sm:text-sm text-[#766D65] mt-1">
-                  Thank you for helping us improve our dining experience! Here is your submitted response.
+                  Thank you for helping us improve our dining experience! Here are genuine reviews from our guests.
                 </p>
               </div>
               <span className="self-start sm:self-auto text-xs text-[#766D65] bg-gray-100 px-3 py-1.5 rounded-full font-medium">
-                {submittedFeedbacks.length} {submittedFeedbacks.length === 1 ? 'response recorded' : 'responses recorded'}
+                {visibleFeedbacks.length} {visibleFeedbacks.length === 1 ? 'review' : 'reviews'}
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-              {submittedFeedbacks.map((fb, idx) => (
+              {visibleFeedbacks.map((fb, idx) => (
                 <div
                   key={fb.id || idx}
                   className="bg-[#FFFDF3] border border-[#F3E8B5] rounded-xl p-5 sm:p-6 shadow-2xs flex flex-col justify-between transition-all hover:shadow-md"

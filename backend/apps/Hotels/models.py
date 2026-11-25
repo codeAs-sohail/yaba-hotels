@@ -154,10 +154,10 @@ class Gallery(TimeStampedModel):
     Image showcase storing Supabase image URL or path.
     """
     image_link = models.CharField(max_length=500)
+    is_visible = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Gallery Image #{self.id}"
-
 
 
 
