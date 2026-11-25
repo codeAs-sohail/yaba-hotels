@@ -150,8 +150,8 @@ export default function GalleryManagement() {
         </button>
       </div>
 
-      {/* Loading Skeletons */}
-      {(isLoading || isFetching) && (
+      {/* Loading Skeletons - initial load only */}
+      {isLoading && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5">
           {[1, 2, 3, 4].map((n) => (
             <div key={n} className="aspect-square bg-gray-200 rounded-2xl animate-pulse" />
@@ -179,7 +179,7 @@ export default function GalleryManagement() {
       )}
 
       {/* Image Grid */}
-      {!isLoading && !isFetching && gallery.length > 0 && (
+      {!isLoading && gallery.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
           {gallery.map((img) => {
             return (
@@ -195,6 +195,13 @@ export default function GalleryManagement() {
                     loading="lazy"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
+                      const parent = e.currentTarget.parentElement;
+                      if (parent && !parent.querySelector('.img-error-placeholder')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'img-error-placeholder absolute inset-0 flex flex-col items-center justify-center text-[#766D65]/60 gap-1';
+                        placeholder.innerHTML = '<span class="text-2xl">🖼️</span><span class="text-[11px] font-medium">Image unavailable</span>';
+                        parent.appendChild(placeholder);
+                      }
                     }}
                   />
 

@@ -131,7 +131,7 @@ class MenuListCreateView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         data = request.data.copy()#copy because->Because we may need to modify this data before passing it to the serializer.
 
-        # Handle file upload to Supabase or fallback
+        # Handle file upload to Supabase
         image_file = request.FILES.get('image')
         if image_file:
             try:
@@ -140,8 +140,11 @@ class MenuListCreateView(generics.ListCreateAPIView):
             except ValueError as ve:
                 return Response({'error': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
-                logger.error(f"Image upload failed: {e}")
-                data['image'] = ''
+                logger.error(f"Menu image upload failed: {e}")
+                return Response(
+                    {'error': f'Image upload failed: {str(e)}'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         # Validate and serialize Menu
         serializer = self.get_serializer(data=data)
@@ -201,6 +204,12 @@ class MenuDetailView(generics.RetrieveUpdateDestroyAPIView):
                 new_image_uploaded = True
             except ValueError as ve:
                 return Response({'error': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                logger.error(f"Menu image update failed: {e}")
+                return Response(
+                    {'error': f'Image upload failed: {str(e)}'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
@@ -332,6 +341,12 @@ class GalleryDetailView(generics.RetrieveUpdateDestroyAPIView):
                 data['image_link'] = uploaded_url
             except ValueError as ve:
                 return Response({'error': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                logger.error(f"Gallery image update failed: {e}")
+                return Response(
+                    {'error': f'Image upload failed: {str(e)}'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         serializer = self.get_serializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
