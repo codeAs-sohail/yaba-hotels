@@ -222,41 +222,45 @@ export default function Layout() {
       {/* Minimal, Authentic Restaurant Footer */}
       <footer className="bg-[#181310] text-[#D8D2CD] border-t border-[#29211C]/30 mt-auto">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-          {/* Top section: Minimal Instagram Scanner banner */}
-          <div className="bg-[#241D18] rounded-2xl p-5 sm:p-6 border border-white/5 mb-10">
-            <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-7">
-              {/* Medium Instagram QR Scanner */}
-              <div className="flex-shrink-0 bg-white p-2 sm:p-2.5 rounded-xl shadow-sm border border-white/10">
-                <img
-                  src="/custom-images/instagram.jpeg"
-                  alt="Yaba Fast Food Instagram QR"
-                  className="w-24 sm:w-28 h-auto object-contain rounded-lg"
-                />
+          {/* Top section: Sleek Compact Instagram Scanner banner */}
+          <div className="bg-[#241D18] rounded-2xl p-3 sm:p-4 border border-white/5 mb-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6">
+              <div className="flex items-center gap-3.5">
+                {/* Compact Instagram QR Scanner */}
+                <div className="flex-shrink-0 bg-white p-1.5 rounded-xl shadow-xs border border-white/10">
+                  <img
+                    src="/custom-images/instagram.jpeg"
+                    alt="Yaba Fast Food Instagram QR"
+                    className="w-12 h-12 sm:w-14 sm:h-14 object-contain rounded-lg"
+                  />
+                </div>
+
+                {/* Unique Compact Instagram Copy */}
+                <div className="space-y-0.5 text-center sm:text-left">
+                  <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#E85D16]">
+                    <span>📸</span>
+                    <span>@yabafastfood</span>
+                  </div>
+                  <h3 className="font-serif text-sm sm:text-base font-bold text-white tracking-tight leading-snug">
+                    Follow Our Kitchen on Instagram
+                  </h3>
+                  <p className="text-[11px] sm:text-xs text-[#A89F97] line-clamp-1 max-w-lg">
+                    Scan QR or visit to view live wok-tossing and daily authentic Hyderabad specials.
+                  </p>
+                </div>
               </div>
 
-              {/* Unique Minimal Instagram Copy */}
-              <div className="flex-1 text-center sm:text-left space-y-1.5">
-                <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E85D16]">
-                  <span>📸</span>
-                  <span>@yabafastfood</span>
-                </div>
-                <h3 className="font-serif text-lg sm:text-xl font-bold text-white tracking-tight">
-                  Follow Our Kitchen on Instagram
-                </h3>
-                <p className="text-xs sm:text-sm text-[#A89F97] max-w-xl leading-relaxed">
-                  Scan the QR with your phone camera or visit our page to see live wok-tossing, daily specials, and authentic Hyderabad street food stories.
-                </p>
-                <div className="pt-1.5">
-                  <a
-                    href="https://www.instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#E85D16] hover:bg-[#B94720] px-4 py-2 rounded-lg transition-colors shadow-xs"
-                  >
-                    <span>Open Instagram</span>
-                    <span>↗</span>
-                  </a>
-                </div>
+              {/* Action Button */}
+              <div className="flex-shrink-0">
+                <a
+                  href="https://www.instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#E85D16] hover:bg-[#B94720] px-3.5 py-1.5 rounded-lg transition-colors shadow-xs whitespace-nowrap"
+                >
+                  <span>Open Instagram</span>
+                  <span>↗</span>
+                </a>
               </div>
             </div>
           </div>

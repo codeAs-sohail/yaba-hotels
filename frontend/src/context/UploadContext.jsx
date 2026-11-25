@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { authApi } from '../features/auth/authApi';
 
 const UploadContext = createContext(null);
 
@@ -11,6 +13,7 @@ const UploadContext = createContext(null);
 export function UploadProvider({ children }) {
   const [uploads, setUploads] = useState([]);
   const progressTimers = useRef({});
+  const dispatch = useDispatch();
 
   const dismissUpload = useCallback((id) => {
     if (progressTimers.current[id]) {
@@ -65,6 +68,19 @@ export function UploadProvider({ children }) {
       // Finish progress
       clearInterval(progressTimers.current[id]);
       delete progressTimers.current[id];
+
+      // Auto-invalidate RTK Query cache so all views update automatically without manual refresh!
+      try {
+        dispatch(
+          authApi.util.invalidateTags([
+            { type: 'Menu', id: 'LIST' },
+            { type: 'Gallery', id: 'LIST' },
+            { type: 'Branch', id: 'LIST' },
+          ])
+        );
+      } catch (invalErr) {
+        console.warn('Tag invalidation notice:', invalErr);
+      }
 
       setUploads((prev) =>
         prev.map((item) =>
@@ -122,8 +138,8 @@ export function useUpload() {
 }
 
 /**
- * Floating UI Widget displaying active and recent uploads with animated circle and progress line.
- * Stays visible at the bottom of the screen across all dashboard tabs & routes.
+ * Compact Floating UI Widget displaying active and recent uploads with animated circle and progress line.
+ * Pinned unobtrusively at the top-right of the screen so it NEVER covers dashboard buttons or modals.
  */
 function UploadToastContainer({ uploads, onDismiss }) {
   if (uploads.length === 0) return null;
@@ -131,12 +147,12 @@ function UploadToastContainer({ uploads, onDismiss }) {
   return (
     <div
       aria-live="polite"
-      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[99999] flex flex-col gap-3 max-w-sm w-full pointer-events-none px-3 sm:px-0"
+      className="fixed top-3 right-3 sm:top-4 sm:right-6 z-[99999] flex flex-col gap-2 max-w-xs sm:max-w-sm w-full pointer-events-none px-2 sm:px-0"
     >
       {uploads.map((upload) => (
         <div
           key={upload.id}
-          className={`pointer-events-auto w-full bg-white/95 backdrop-blur-md rounded-2xl p-4 border shadow-2xl transition-all duration-300 transform translate-y-0 ${
+          className={`pointer-events-auto w-full bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border shadow-lg transition-all duration-300 ${
             upload.status === 'error'
               ? 'border-red-300 ring-2 ring-red-100'
               : upload.status === 'completed'
@@ -144,14 +160,14 @@ function UploadToastContainer({ uploads, onDismiss }) {
               : 'border-[#141414]/15 ring-2 ring-[#F2E205]/40'
           }`}
         >
-          <div className="flex items-start gap-3">
-            {/* Animated Circle / Spinner or Status Icon */}
-            <div className="flex-shrink-0 mt-0.5">
+          <div className="flex items-center gap-2.5">
+            {/* Small Animated Circle / Spinner or Status Icon */}
+            <div className="flex-shrink-0">
               {upload.status === 'uploading' && (
-                <div className="relative w-8 h-8 flex items-center justify-center">
+                <div className="relative w-6 h-6 flex items-center justify-center">
                   {/* Circular SVG Spinner */}
                   <svg
-                    className="animate-spin w-8 h-8 text-[#E85D16]"
+                    className="animate-spin w-6 h-6 text-[#E85D16]"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -170,74 +186,53 @@ function UploadToastContainer({ uploads, onDismiss }) {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     />
                   </svg>
-                  <span className="absolute text-[9px] font-black text-[#141414]">
+                  <span className="absolute text-[8px] font-black text-[#141414]">
                     {upload.progress}%
                   </span>
                 </div>
               )}
 
               {upload.status === 'completed' && (
-                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-sm shadow-xs">
+                <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs shadow-xs">
                   ✓
                 </div>
               )}
 
               {upload.status === 'error' && (
-                <div className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-sm shadow-xs">
+                <div className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-xs shadow-xs">
                   ✕
                 </div>
               )}
             </div>
 
-            {/* Upload details */}
+            {/* Compact details */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-1">
-                <h4 className="text-xs sm:text-sm font-bold text-[#141414] truncate">
+                <h4 className="text-xs font-bold text-[#141414] truncate leading-tight">
                   {upload.status === 'uploading' &&
                     (upload.type === 'menu' ? 'Saving Menu Item...' : 'Uploading Image...')}
                   {upload.status === 'completed' &&
-                    (upload.type === 'menu' ? 'Menu Item Saved Successfully!' : 'Upload Successful!')}
+                    (upload.type === 'menu' ? 'Menu Item Saved!' : 'Upload Successful!')}
                   {upload.status === 'error' && 'Operation Failed'}
                 </h4>
                 <button
                   type="button"
                   onClick={() => onDismiss(upload.id)}
-                  className="text-gray-400 hover:text-gray-700 p-1 -mr-1 rounded-full text-xs"
+                  className="text-gray-400 hover:text-gray-700 p-0.5 rounded-full text-xs"
                   aria-label="Dismiss"
                 >
                   ✕
                 </button>
               </div>
 
-              <p className="text-[11px] text-[#555555] truncate mt-0.5">
+              <p className="text-[10px] text-[#555555] truncate">
                 {upload.title}
               </p>
 
-              {/* Status explanation */}
-              {upload.status === 'uploading' && (
-                <p className="text-[10px] text-amber-700 mt-1 font-medium leading-tight">
-                  Running asynchronously in background. You can freely switch tabs or perform other operations!
-                </p>
-              )}
-
-              {upload.status === 'completed' && (
-                <p className="text-[10px] text-emerald-700 mt-1 font-medium leading-tight">
-                  {upload.type === 'menu'
-                    ? 'Saved to menu and live across customer devices.'
-                    : 'Saved securely and live in your restaurant showcase.'}
-                </p>
-              )}
-
-              {upload.status === 'error' && (
-                <p className="text-[10px] text-red-600 mt-1 font-medium leading-tight line-clamp-2">
-                  {upload.errorMessage}
-                </p>
-              )}
-
-              {/* Animated Progress Line */}
-              <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden mt-2.5">
+              {/* Slim Progress Line */}
+              <div className="w-full bg-gray-100 rounded-full h-1 overflow-hidden mt-1.5">
                 <div
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                  className={`h-1 rounded-full transition-all duration-300 ${
                     upload.status === 'error'
                       ? 'bg-red-500'
                       : upload.status === 'completed'

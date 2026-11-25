@@ -156,15 +156,16 @@ export default function MenuForm({ initialData = null, onClose, onSuccess }) {
       type: 'menu',
       file: imageFile,
       task: async () => {
+        let res;
         if (isEditMode) {
-          return await updateMenu({ id: itemId, formData }).unwrap();
+          res = await updateMenu({ id: itemId, formData }).unwrap();
         } else {
-          return await createMenu(formData).unwrap();
+          res = await createMenu(formData).unwrap();
         }
+        if (onSuccess) onSuccess();
+        return res;
       },
     });
-
-    if (onSuccess) onSuccess();
   };
 
   return (

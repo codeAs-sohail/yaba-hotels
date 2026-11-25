@@ -76,7 +76,7 @@ function OrderOnlineModal({ isOpen, onClose, item, branchAddress }) {
             <div className="pr-8">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#E85D16]">
-                  Order Online
+                  {hasAnyPlatform ? 'Order Online' : 'Order Offline'}
                 </span>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                   isFull ? 'bg-[#E85D16] text-white' : 'bg-amber-400 text-[#141414]'
@@ -195,14 +195,20 @@ function OrderOnlineModal({ isOpen, onClose, item, branchAddress }) {
               )}
             </div>
           ) : (
-            <div className="text-center py-6 px-4 bg-gray-50 rounded-2xl border border-gray-100">
-              <span className="text-3xl block mb-2">🛵</span>
-              <p className="text-sm font-semibold text-[#141414]">
-                Online ordering links currently unavailable
+            <div className="text-center py-6 px-4 bg-amber-50/70 rounded-2xl border border-amber-200/80">
+              <span className="text-3xl block mb-2">📞</span>
+              <p className="text-base font-serif font-bold text-[#141414]">
+                Order Offline
               </p>
-              <p className="text-xs text-[#766D65] mt-1">
-                This {portionLabel.toLowerCase()} portion is currently available for direct dine-in and counter takeaway at our branch.
+              <p className="text-xs text-[#766D65] mt-1.5 leading-relaxed max-w-xs mx-auto">
+                Online delivery partner links are currently disabled for this item. Please order offline via counter takeaway or dine-in at our branch.
               </p>
+              {branchAddress && (
+                <div className="mt-3.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#141414]/10 text-xs font-semibold text-[#141414] shadow-2xs">
+                  <span>📍</span>
+                  <span>{branchAddress}</span>
+                </div>
+              )}
             </div>
           )}
 
@@ -348,9 +354,19 @@ function MenuItemCard({ item, onOrderOnline }) {
             </div>
           </button>
         ) : (
-          <div className="text-center py-2 px-3 rounded-xl bg-gray-50 border border-gray-100 text-[11px] font-medium text-gray-400 italic">
-            Dine-in & Takeaway Only
-          </div>
+          <button
+            type="button"
+            onClick={() => onOrderOnline(item)}
+            className="w-full bg-[#FFFBEA] hover:bg-[#FFF3C4] active:bg-[#FFEAA0] text-[#141414] font-bold text-xs sm:text-sm py-2.5 px-3.5 rounded-xl border border-[#F2E205] shadow-2xs transition-all duration-200 flex items-center justify-between cursor-pointer"
+          >
+            <div className="flex items-center gap-2 truncate">
+              <span className="text-sm leading-none">📞</span>
+              <span>Order Offline</span>
+            </div>
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#766D65] bg-white px-2 py-0.5 rounded-md border border-[#141414]/10">
+              Dine-in / Takeaway
+            </span>
+          </button>
         )}
       </div>
     </div>
@@ -393,7 +409,10 @@ export default function CustomerMenu() {
     isError,
     error,
     refetch,
-  } = useGetMenusQuery(activeBranchId);
+  } = useGetMenusQuery(activeBranchId, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
 
   // Fetch categories dynamically from Category API
   const { data: categories = [] } = useGetCategoriesQuery();

@@ -10,7 +10,15 @@ import BranchForm from './BranchForm';
  * Displays branch cards, Add/Update branch modals, and safe branch deletion.
  */
 export default function BranchManagement() {
-  const { data: branches = [], isLoading, isFetching } = useGetBranchesQuery();
+  const {
+    data: branches = [],
+    isLoading,
+    isFetching,
+    refetch: refetchBranches,
+  } = useGetBranchesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
   const [deleteBranch, { isLoading: isDeleting }] = useDeleteBranchMutation();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -47,11 +55,13 @@ export default function BranchManagement() {
       await deleteBranch({ id: deletingBranch.id, force: forceDeleteConfirm }).unwrap();
       setDeletingBranch(null);
       setForceDeleteConfirm(false);
+      refetchBranches();
     } catch (err) {
       console.error('Failed to delete branch:', err);
       if (err?.status === 404) {
         setDeletingBranch(null);
         setForceDeleteConfirm(false);
+        refetchBranches();
         return;
       }
       const msg = err?.data?.error || 'Failed to delete branch.';
@@ -202,6 +212,7 @@ export default function BranchManagement() {
         <BranchForm
           initialData={editingBranch}
           onClose={() => setIsFormOpen(false)}
+          onSuccess={() => refetchBranches()}
         />
       )}
 

@@ -22,7 +22,15 @@ export default function MenuManagement() {
 
   // Queries
   const { data: branches = [], isLoading: loadingBranches } = useGetBranchesQuery();
-  const { data: menus = [], isLoading: loadingMenus, isFetching } = useGetMenusQuery(selectedBranchId);
+  const {
+    data: menus = [],
+    isLoading: loadingMenus,
+    isFetching,
+    refetch: refetchMenus,
+  } = useGetMenusQuery(selectedBranchId, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
   const [deleteMenu, { isLoading: isDeleting }] = useDeleteMenuMutation();
 
   const handleOpenAdd = () => {
@@ -40,11 +48,13 @@ export default function MenuManagement() {
     try {
       await deleteMenu(deletingItem.id).unwrap();
       setDeletingItem(null);
+      refetchMenus();
     } catch (err) {
       console.error('Failed to delete menu item:', err);
       // If 404, it was already removed from the database
       if (err?.status === 404) {
         setDeletingItem(null);
+        refetchMenus();
         return;
       }
       alert(err?.data?.error || 'Failed to delete menu item. Please try again.');
@@ -79,7 +89,16 @@ export default function MenuManagement() {
         </div>
 
         {/* Add Menu Button & Stats */}
-        <div className="flex items-center justify-between sm:justify-end gap-3">
+        <div className="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3">
+          {activeMenuUploads.length > 0 && (
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold">
+              <svg className="animate-spin w-3 h-3 text-[#E85D16]" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+              </svg>
+              <span>Saving in background...</span>
+            </div>
+          )}
           <span className="text-xs font-bold text-[#555555] bg-gray-100 px-3 py-1.5 rounded-lg">
             {menus.length} {menus.length === 1 ? 'item' : 'items'}
           </span>
@@ -92,34 +111,6 @@ export default function MenuManagement() {
           </button>
         </div>
       </div>
-
-      {/* Asynchronous Background Menu Upload Banner */}
-      {activeMenuUploads.length > 0 && (
-        <div className="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-          <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 flex items-center justify-center flex-shrink-0">
-              <svg className="animate-spin w-8 h-8 text-[#E85D16]" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-bold text-[#141414]">
-                Saving {activeMenuUploads[0].title} in background...
-              </p>
-              <p className="text-[11px] text-[#766D65]">
-                Asynchronous operation running. You can freely edit other items, filter, or switch tabs.
-              </p>
-            </div>
-          </div>
-          <div className="w-full sm:w-44 bg-amber-200/60 rounded-full h-2 overflow-hidden flex-shrink-0">
-            <div
-              className="bg-gradient-to-r from-[#F2E205] to-[#E85D16] h-2 rounded-full transition-all duration-300"
-              style={{ width: `${activeMenuUploads[0].progress}%` }}
-            />
-          </div>
-        </div>
-      )}
 
       {/* Loading Skeletons */}
       {(loadingMenus || isFetching) && (
@@ -175,6 +166,7 @@ export default function MenuManagement() {
         <MenuForm
           initialData={editingItem}
           onClose={() => setIsFormOpen(false)}
+          onSuccess={() => refetchMenus()}
         />
       )}
 

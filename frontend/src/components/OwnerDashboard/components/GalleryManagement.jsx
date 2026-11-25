@@ -13,7 +13,15 @@ import { resolveImageUrl } from '../../../api/config';
  * Displays responsive photo grid, upload with live preview, update/replace, and delete.
  */
 export default function GalleryManagement() {
-  const { data: gallery = [], isLoading, isFetching } = useGetGalleryQuery();
+  const {
+    data: gallery = [],
+    isLoading,
+    isFetching,
+    refetch: refetchGallery,
+  } = useGetGalleryQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
   const [createGallery, { isLoading: isCreating }] = useCreateGalleryMutation();
   const [updateGallery, { isLoading: isUpdating }] = useUpdateGalleryMutation();
   const [deleteGallery, { isLoading: isDeleting }] = useDeleteGalleryMutation();
@@ -71,11 +79,14 @@ export default function GalleryManagement() {
         type: 'gallery',
         file: fileToUpload,
         task: async () => {
+          let res;
           if (targetToReplace) {
-            return await updateGallery({ id: targetToReplace.id, formData }).unwrap();
+            res = await updateGallery({ id: targetToReplace.id, formData }).unwrap();
           } else {
-            return await createGallery(formData).unwrap();
+            res = await createGallery(formData).unwrap();
           }
+          refetchGallery();
+          return res;
         },
       });
     } catch (err) {
@@ -88,10 +99,12 @@ export default function GalleryManagement() {
     try {
       await deleteGallery(deletingImage.id).unwrap();
       setDeletingImage(null);
+      refetchGallery();
     } catch (err) {
       console.error('Failed to delete image:', err);
       if (err?.status === 404) {
         setDeletingImage(null);
+        refetchGallery();
         return;
       }
       alert(err?.data?.error || 'Failed to delete image. Please try again.');

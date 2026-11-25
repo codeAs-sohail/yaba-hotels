@@ -111,55 +111,64 @@ export default function MenuCard({ item, onEdit, onDelete }) {
               Delivery Platforms
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              {/* Zomato */}
-              {hasZomato ? (
-                <a
-                  href={platforms.zomato}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
-                  Zomato
-                </a>
-              ) : (
-                <span className="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 bg-gray-50 border border-gray-100">
-                  Zomato —
+              {!hasZomato && !hasSwiggy && !hasOwnly ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-[#FFFBEA] text-[#141414] border border-[#F2E205]">
+                  <span>📞</span>
+                  <span>Order Offline (All links disabled)</span>
                 </span>
-              )}
+              ) : (
+                <>
+                  {/* Zomato */}
+                  {hasZomato ? (
+                    <a
+                      href={platforms.zomato}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
+                      Zomato
+                    </a>
+                  ) : (
+                    <span className="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 bg-gray-50 border border-gray-100">
+                      Zomato —
+                    </span>
+                  )}
 
-              {/* Swiggy */}
-              {hasSwiggy ? (
-                <a
-                  href={platforms.swiggy}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100 transition-colors"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-orange-600 animate-pulse" />
-                  Swiggy
-                </a>
-              ) : (
-                <span className="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 bg-gray-50 border border-gray-100">
-                  Swiggy —
-                </span>
-              )}
+                  {/* Swiggy */}
+                  {hasSwiggy ? (
+                    <a
+                      href={platforms.swiggy}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100 transition-colors"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-orange-600 animate-pulse" />
+                      Swiggy
+                    </a>
+                  ) : (
+                    <span className="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 bg-gray-50 border border-gray-100">
+                      Swiggy —
+                    </span>
+                  )}
 
-              {/* Ownly */}
-              {hasOwnly ? (
-                <a
-                  href={platforms.ownly}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-yellow-50 text-amber-800 border border-yellow-200 hover:bg-yellow-100 transition-colors"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-600 animate-pulse" />
-                  Ownly
-                </a>
-              ) : (
-                <span className="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 bg-gray-50 border border-gray-100">
-                  Ownly —
-                </span>
+                  {/* Ownly */}
+                  {hasOwnly ? (
+                    <a
+                      href={platforms.ownly}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-yellow-50 text-amber-800 border border-yellow-200 hover:bg-yellow-100 transition-colors"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-600 animate-pulse" />
+                      Ownly
+                    </a>
+                  ) : (
+                    <span className="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 bg-gray-50 border border-gray-100">
+                      Ownly —
+                    </span>
+                  )}
+                </>
               )}
             </div>
           </div>
