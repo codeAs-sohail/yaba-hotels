@@ -10,26 +10,22 @@ const RATING_OPTIONS = [
   { value: 5, label: 'Loved it' },
 ];
 
-const QUALITY_TAGS = [
-  'Food Quality',
-  'Service',
-  'Ambience',
-  'Timeliness',
-  'Value for Money',
-  'Customer Satisfaction',
+const TAG_ROWS = [
+  ['Food Quality', 'Service', 'Ambience', 'Timeliness'],
+  ['Value for Money', 'Customer Satisfaction'],
 ];
 
 export default function Feedback() {
   const { data: branches = [], isLoading: loadingBranches } = useGetBranchesQuery();
   const [createFeedback, { isLoading: isSubmitting }] = useCreateFeedbackMutation();
 
-  const [stars, setStars] = useState(5);
+  const [stars, setStars] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [fullName, setFullName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
   const [branchId, setBranchId] = useState('');
-  const [selectedQualities, setSelectedQualities] = useState(['Food Quality', 'Customer Satisfaction']);
+  const [selectedQualities, setSelectedQualities] = useState([]);
   const [message, setMessage] = useState('');
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -71,10 +67,12 @@ export default function Feedback() {
       return;
     }
 
+    const ratingValue = Number(stars) > 0 ? Number(stars) : 5;
+
     try {
       const res = await createFeedback({
         branch: Number(branchId),
-        stars: Number(stars) || 5,
+        stars: ratingValue,
         name: fullName.trim(),
         phone_number: mobileNumber.trim(),
         email: email.trim(),
@@ -87,7 +85,7 @@ export default function Feedback() {
       const newFeedback = {
         id: res?.id || Date.now(),
         branch_address: matchedBranch?.address || res?.branch_address || 'Yaba Fast Food',
-        stars: Number(stars) || 5,
+        stars: ratingValue,
         name: fullName.trim() || 'Guest Diner',
         phone_number: mobileNumber.trim(),
         email: email.trim(),
@@ -126,63 +124,51 @@ export default function Feedback() {
     }
   };
 
-  const handleReset = () => {
-    setSuccessMessage('');
-    setStars(5);
-    setFullName('');
-    setMobileNumber('');
-    setEmail('');
-    setBranchId('');
-    setSelectedQualities(['Food Quality', 'Customer Satisfaction']);
-    setMessage('');
-    setErrorMessage('');
-  };
-
   return (
-    <div className="min-h-screen bg-white text-[#29211C] font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="w-full min-h-screen bg-white text-[#29211C] font-sans">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="pb-3 text-xs sm:text-sm text-[#766D65]">
+        <nav aria-label="Breadcrumb" className="mb-4 text-xs sm:text-sm text-gray-500">
           <ol className="flex items-center gap-2">
             <li>
-              <Link to="/home" className="hover:text-[#29211C] transition-colors font-medium">
+              <Link to="/home" className="hover:text-gray-800 transition-colors">
                 Home
               </Link>
             </li>
-            <li aria-hidden="true" className="text-[#29211C]/30 select-none">
+            <li aria-hidden="true" className="text-gray-400 select-none">
               /
             </li>
-            <li aria-current="page" className="font-semibold text-[#29211C]">
+            <li aria-current="page" className="text-gray-800 font-medium">
               Feedback
             </li>
           </ol>
         </nav>
 
-        {/* Page Title */}
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#29211C] tracking-tight mb-8">
-          Feedback
-        </h1>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-          {/* Left Side: Value Input Note Banner (Pista House style) */}
+        {/* 2-Column Desktop Grid matching Pista House Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          {/* Left Column: Heading + Value Input Note Card */}
           <div className="lg:col-span-5">
-            <div className="bg-[#FFFDF5] border border-amber-200/80 rounded-2xl p-6 sm:p-7 shadow-xs">
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#1F1E1D] tracking-tight mb-8">
+              Feedback
+            </h1>
+
+            <div className="bg-[#FFFDF3] border border-[#F3E8B5] rounded-xl p-6 sm:p-7 shadow-2xs">
               <p className="text-sm sm:text-[15px] text-[#4A4036] leading-relaxed">
                 We value your input! Please take a moment to share your feedback so we can continue to improve and serve you better. Your thoughts make a difference.
               </p>
             </div>
           </div>
 
-          {/* Right Side: Feedback Form */}
+          {/* Right Column: Share your feedback with us Form */}
           <div className="lg:col-span-7">
-            <div className="space-y-6">
-              <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#29211C]">
+            <div>
+              <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#1F1E1D] mb-6">
                 Share your feedback with us
               </h2>
 
               {successMessage && (
-                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-sm font-medium text-emerald-800 flex items-center gap-3 shadow-xs">
-                  <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+                <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-sm font-medium text-emerald-800 flex items-center gap-3 shadow-xs">
+                  <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
                     ✓
                   </div>
                   <div>
@@ -195,12 +181,12 @@ export default function Feedback() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Rate our service: 5 Stars with Text Labels */}
+                {/* Rate our service */}
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#766D65] mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Rate our service
                   </label>
-                  <div className="bg-[#FAFAFA] border border-[#EAE6E1] rounded-2xl p-4 sm:p-5">
+                  <div className="bg-[#F5F5F5] rounded-xl p-5 sm:p-6">
                     <div className="grid grid-cols-5 gap-1 sm:gap-2 text-center">
                       {RATING_OPTIONS.map((item) => {
                         const isHovered = hoveredStar >= item.value;
@@ -213,18 +199,20 @@ export default function Feedback() {
                             onClick={() => setStars(item.value)}
                             onMouseEnter={() => setHoveredStar(item.value)}
                             onMouseLeave={() => setHoveredStar(0)}
-                            className="group flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all hover:bg-white hover:shadow-xs cursor-pointer focus:outline-none"
+                            className="group flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all hover:bg-white hover:shadow-2xs cursor-pointer focus:outline-none"
                           >
-                            <span
-                              className={`text-2xl sm:text-3xl transition-colors duration-150 ${
-                                isSelected ? 'text-amber-400' : 'text-gray-300'
-                              }`}
+                            <svg
+                              className="w-8 h-8 sm:w-10 sm:h-10 transition-colors duration-150"
+                              viewBox="0 0 24 24"
+                              fill={isSelected ? '#F59E0B' : '#D1D5DB'}
+                              stroke={isSelected ? '#D97706' : 'none'}
+                              strokeWidth="0.5"
                             >
-                              ★
-                            </span>
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
                             <span
-                              className={`mt-1.5 text-[11px] sm:text-xs font-medium transition-colors ${
-                                isSelected ? 'text-[#29211C] font-semibold' : 'text-[#8E867E]'
+                              className={`mt-2 text-xs font-medium transition-colors ${
+                                isSelected ? 'text-[#1F1E1D] font-semibold' : 'text-[#6B7280]'
                               }`}
                             >
                               {item.label}
@@ -238,7 +226,7 @@ export default function Feedback() {
 
                 {/* Full Name */}
                 <div>
-                  <label htmlFor="feedback-fullname" className="block text-xs font-semibold uppercase tracking-wider text-[#766D65] mb-1.5">
+                  <label htmlFor="feedback-fullname" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Full Name
                   </label>
                   <input
@@ -247,13 +235,13 @@ export default function Feedback() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Enter Full Name"
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAFAFA] border border-[#EAE6E1] text-sm text-[#29211C] placeholder-[#A0988E] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#29211C]/20 transition-all"
+                    className="w-full px-4 py-3.5 rounded-lg bg-[#F5F5F5] border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition-colors text-sm text-[#1F2937] placeholder-gray-400"
                   />
                 </div>
 
                 {/* Mobile Number */}
                 <div>
-                  <label htmlFor="feedback-mobile" className="block text-xs font-semibold uppercase tracking-wider text-[#766D65] mb-1.5">
+                  <label htmlFor="feedback-mobile" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Mobile Number
                   </label>
                   <input
@@ -262,14 +250,14 @@ export default function Feedback() {
                     value={mobileNumber}
                     onChange={(e) => setMobileNumber(e.target.value)}
                     placeholder="Enter Mobile Number"
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAFAFA] border border-[#EAE6E1] text-sm text-[#29211C] placeholder-[#A0988E] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#29211C]/20 transition-all"
+                    className="w-full px-4 py-3.5 rounded-lg bg-[#F5F5F5] border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition-colors text-sm text-[#1F2937] placeholder-gray-400"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label htmlFor="feedback-email" className="block text-xs font-semibold uppercase tracking-wider text-[#766D65] mb-1.5">
-                    Email <span className="text-red-500">*</span>
+                  <label htmlFor="feedback-email" className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Email
                   </label>
                   <input
                     id="feedback-email"
@@ -278,61 +266,72 @@ export default function Feedback() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter Email"
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAFAFA] border border-[#EAE6E1] text-sm text-[#29211C] placeholder-[#A0988E] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#29211C]/20 transition-all"
+                    className="w-full px-4 py-3.5 rounded-lg bg-[#F5F5F5] border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition-colors text-sm text-[#1F2937] placeholder-gray-400"
                   />
                 </div>
 
                 {/* Select Branch */}
                 <div>
-                  <label htmlFor="feedback-branch" className="block text-xs font-semibold uppercase tracking-wider text-[#766D65] mb-1.5">
-                    Select Branch <span className="text-red-500">*</span>
+                  <label htmlFor="feedback-branch" className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Select Branch
                   </label>
-                  <select
-                    id="feedback-branch"
-                    required
-                    value={branchId}
-                    onChange={(e) => setBranchId(e.target.value)}
-                    disabled={loadingBranches}
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAFAFA] border border-[#EAE6E1] text-sm text-[#29211C] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#29211C]/20 transition-all cursor-pointer"
-                  >
-                    <option value="">Select Branch</option>
-                    {branches.map((b) => (
-                      <option key={b.id} value={b.id}>
-                        {b.address}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      id="feedback-branch"
+                      required
+                      value={branchId}
+                      onChange={(e) => setBranchId(e.target.value)}
+                      disabled={loadingBranches}
+                      className="w-full appearance-none px-4 py-3.5 pr-10 rounded-lg bg-[#F5F5F5] border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition-colors text-sm text-[#1F2937] cursor-pointer disabled:opacity-60"
+                    >
+                      <option value="">Select Branch</option>
+                      {branches.map((b) => (
+                        <option key={b.id} value={b.id}>
+                          {b.address}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
 
-                {/* What stood out to you? (Pill tags) */}
+                {/* What stood out to you? */}
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-[#766D65] mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2.5">
                     What stood out to you?
                   </label>
-                  <div className="flex flex-wrap gap-2">
-                    {QUALITY_TAGS.map((tag) => {
-                      const isSelected = selectedQualities.includes(tag);
-                      return (
-                        <button
-                          key={tag}
-                          type="button"
-                          onClick={() => toggleQuality(tag)}
-                          className={`px-4 py-2 rounded-xl text-xs font-medium border transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-[#29211C] text-white border-[#29211C] shadow-xs'
-                              : 'bg-[#FAFAFA] text-[#4A4036] border-[#EAE6E1] hover:bg-gray-100'
-                          }`}
-                        >
-                          {isSelected ? '✓ ' : ''}{tag}
-                        </button>
-                      );
-                    })}
+                  <div className="space-y-2">
+                    {TAG_ROWS.map((row, rowIndex) => (
+                      <div key={rowIndex} className="flex flex-wrap gap-2">
+                        {row.map((tag) => {
+                          const isSelected = selectedQualities.includes(tag);
+                          return (
+                            <button
+                              key={tag}
+                              type="button"
+                              onClick={() => toggleQuality(tag)}
+                              className={`px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#29211C] text-white border border-[#29211C] shadow-xs'
+                                  : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-2xs'
+                              }`}
+                            >
+                              {tag}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 {/* Your Message */}
                 <div>
-                  <label htmlFor="feedback-message" className="block text-xs font-semibold uppercase tracking-wider text-[#766D65] mb-1.5">
+                  <label htmlFor="feedback-message" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Your Message
                   </label>
                   <textarea
@@ -341,13 +340,13 @@ export default function Feedback() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Your message here"
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAFAFA] border border-[#EAE6E1] text-sm text-[#29211C] placeholder-[#A0988E] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#29211C]/20 transition-all resize-y"
+                    className="w-full px-4 py-3.5 rounded-lg bg-[#F5F5F5] border border-transparent focus:border-gray-300 focus:bg-white focus:outline-none transition-colors text-sm text-[#1F2937] placeholder-gray-400 resize-y"
                   />
                 </div>
 
                 {/* Error display */}
                 {errorMessage && (
-                  <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs font-medium text-red-700">
+                  <div className="p-3.5 rounded-lg bg-red-50 border border-red-200 text-xs font-medium text-red-700">
                     ⚠️ {errorMessage}
                   </div>
                 )}
@@ -357,7 +356,7 @@ export default function Feedback() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#29211C] hover:bg-black text-white font-medium text-sm transition-all shadow-sm hover:shadow-md active:scale-98 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-[#29211C] hover:bg-black text-white font-medium text-sm transition-all shadow-sm hover:shadow active:scale-98 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? 'Submitting Feedback...' : 'Share Feedback'}
                   </button>
@@ -367,11 +366,11 @@ export default function Feedback() {
           </div>
         </div>
 
-        {/* Submitted Feedback Section - Shown Below the Form */}
+        {/* Submitted Feedback Section - Displayed Below the Form */}
         {submittedFeedbacks.length > 0 && (
           <section
             id="user-submitted-feedback-section"
-            className="mt-14 pt-10 border-t border-[#EAE6E1]"
+            className="mt-16 pt-10 border-t border-[#EAE6E1]"
             aria-labelledby="submitted-feedback-heading"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
@@ -395,7 +394,7 @@ export default function Feedback() {
               {submittedFeedbacks.map((fb, idx) => (
                 <div
                   key={fb.id || idx}
-                  className="bg-[#FFFDF5] border border-amber-200/80 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between transition-all hover:shadow-md"
+                  className="bg-[#FFFDF3] border border-[#F3E8B5] rounded-xl p-5 sm:p-6 shadow-2xs flex flex-col justify-between transition-all hover:shadow-md"
                 >
                   <div>
                     {/* Header: User initials, name, branch and star rating */}
@@ -431,7 +430,7 @@ export default function Feedback() {
                         {fb.qualities.map((tag) => (
                           <span
                             key={tag}
-                            className="px-2.5 py-1 rounded-lg bg-white border border-[#EAE6E1] text-[11px] font-semibold text-[#4A4036] shadow-2xs"
+                            className="px-2.5 py-1 rounded-md bg-white border border-gray-200 text-[11px] font-semibold text-[#4A4036] shadow-2xs"
                           >
                             ✓ {tag}
                           </span>
@@ -441,7 +440,7 @@ export default function Feedback() {
 
                     {/* Message Box */}
                     {fb.message ? (
-                      <div className="p-3.5 rounded-xl bg-white/90 border border-[#EAE6E1] text-sm text-[#29211C] leading-relaxed italic">
+                      <div className="p-3.5 rounded-lg bg-white/90 border border-gray-200 text-sm text-[#29211C] leading-relaxed italic">
                         "{fb.message}"
                       </div>
                     ) : (
@@ -450,7 +449,7 @@ export default function Feedback() {
                   </div>
 
                   {/* Card Footer: Timestamp & Verified status */}
-                  <div className="mt-5 pt-3.5 border-t border-[#EAE6E1]/70 flex items-center justify-between text-[11px] text-[#766D65]">
+                  <div className="mt-5 pt-3.5 border-t border-gray-200/70 flex items-center justify-between text-[11px] text-[#766D65]">
                     <span>
                       {new Date(fb.created_at).toLocaleDateString('en-IN', {
                         month: 'short',
