@@ -6,6 +6,7 @@ import Branches from './components/Branches';
 import BranchSelection from './components/BranchSelection';
 import CustomerMenu from './components/CustomerMenu';
 import Contact from './components/Contact';
+import Feedback from './components/Feedback';
 import OwnerLogin from './components/OwnerLogin';
 import Owner from './components/Owner';
 
@@ -31,7 +32,7 @@ function App() {
           <Route path="branches" element={<Branches />} />
           <Route path="gallery" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-4xl font-bold text-dark-900">Gallery Page</h1></div>} />
           <Route path="about" element={<About />} />
-          <Route path="feedback" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-4xl font-bold text-dark-900">Feedback Page</h1></div>} />
+          <Route path="feedback" element={<Feedback />} />
           <Route path="contact" element={<Contact />} />
 
           {/* Fallback to /home */}

@@ -159,8 +159,9 @@ class Gallery(TimeStampedModel):
         return f"Gallery Image #{self.id}"
 
 
-class Feedback(TimeStampedModel):
 
+
+class Feedback(TimeStampedModel):
     """
     Customer feedback and ratings for a branch.
     """
@@ -170,6 +171,8 @@ class Feedback(TimeStampedModel):
         related_name='feedbacks'
     )
     stars = models.PositiveSmallIntegerField()
+    name = models.CharField(max_length=120, blank=True, default='')
+    phone_number = models.CharField(max_length=30, blank=True, default='')
     email = models.EmailField(max_length=254)
     qualities = models.JSONField(default=list, blank=True)
     message = models.TextField(blank=True, default='')

@@ -17,12 +17,12 @@ from .serializers import (
     GallerySerializer,
     FeedbackSerializer,
 )
-from .supabase import upload_image_to_supabase, delete_image_from_supabase
 
+from .supabase import upload_image_to_supabase, delete_image_from_supabase
 logger = logging.getLogger(__name__)
 
-
 class LogoutView(APIView):
+    
     """
     Log out user by blacklisting the provided refresh token.
     """
@@ -70,7 +70,7 @@ class MenuListCreateView(generics.ListCreateAPIView):
         if self.request.method in ['GET', 'HEAD', 'OPTIONS']:
             return [AllowAny()]
         return [IsAuthenticated()]
-
+    
     def get_queryset(self):
         queryset = (
             Menu.objects.select_related('branch', 'category')
@@ -85,16 +85,16 @@ class MenuListCreateView(generics.ListCreateAPIView):
                 queryset = queryset.none()
         return queryset
 
-    @transaction.atomic
+    @transaction.atomic #->If anything fails during transaction it gets rollback 
     def create(self, request, *args, **kwargs):
-        data = request.data.copy()
+        data = request.data.copy()#copy because->Because we may need to modify this data before passing it to the serializer.
 
         # Handle file upload to Supabase or fallback
         image_file = request.FILES.get('image')
         if image_file:
             try:
                 uploaded_url = upload_image_to_supabase(image_file, folder="menu")
-                data['image'] = uploaded_url
+                data['image'] = uploaded_url #storing image url in image field so that when we save it , it gets save in DB
             except ValueError as ve:
                 return Response({'error': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
@@ -118,7 +118,7 @@ class MenuListCreateView(generics.ListCreateAPIView):
                 zomato=zomato,
                 swiggy=swiggy,
                 ownly=ownly,
-            )
+            )   
 
         # Refresh from DB with relations
         output_serializer = self.get_serializer(menu_item)
@@ -143,11 +143,12 @@ class MenuDetailView(generics.RetrieveUpdateDestroyAPIView):
     @transaction.atomic
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', True)
-        instance = self.get_object()
+        instance = self.get_object()#PATCH /api/menu/15/-> get the object with id = 15 
         data = request.data.copy()
 
         old_image_url = instance.image
         new_image_uploaded = False
+
 
         # Handle image replacement
         image_file = request.FILES.get('image')
@@ -168,6 +169,8 @@ class MenuDetailView(generics.RetrieveUpdateDestroyAPIView):
             delete_image_from_supabase(old_image_url)
 
         # Update or create delivery platform links if provided in request
+        #any() returns True if at least one condition is true.
+
         has_platform_data = any(k in request.data for k in ['zomato', 'swiggy', 'ownly'])
         if has_platform_data:
             platform = OnlinePlatforms.objects.filter(item=menu_item).first()
@@ -221,6 +224,7 @@ class GalleryListCreateView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
+
 
         # Handle file upload
         image_file = request.FILES.get('image')
@@ -365,14 +369,20 @@ class BranchDetailView(generics.RetrieveUpdateDestroyAPIView):
 # FEEDBACK MANAGEMENT APIS
 # ==============================================================================
 
-class FeedbackListView(generics.ListAPIView):
+class FeedbackListView(generics.ListCreateAPIView):
     """
     GET /api/feedback/?branch_id=<id>&is_featured=<true|false>
     List customer feedback (supports branch and featured filters).
     Unauthenticated users can view featured feedbacks. Authenticated owners see all.
+
+    POST /api/feedback/
+    Submit customer feedback for a branch. Publicly accessible.
     """
     permission_classes = (AllowAny,)
     serializer_class = FeedbackSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(is_featured=False)
 
     def get_queryset(self):
         queryset = Feedback.objects.select_related('branch').order_by('-created_at')

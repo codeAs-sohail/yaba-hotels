@@ -119,6 +119,8 @@ class FeedbackSerializer(serializers.ModelSerializer):
             'id',
             'branch',
             'branch_address',
+            'name',
+            'phone_number',
             'stars',
             'email',
             'qualities',
@@ -127,3 +129,8 @@ class FeedbackSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
+        extra_kwargs = {
+            'is_featured': {'read_only': True},
+            'name': {'required': False, 'allow_blank': True},
+            'phone_number': {'required': False, 'allow_blank': True},
+        }

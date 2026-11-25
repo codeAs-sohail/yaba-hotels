@@ -107,18 +107,23 @@ function OrderOnlineModal({ isOpen, onClose, item, branchAddress }) {
                   href={platforms.zomato}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between p-4 rounded-2xl bg-[#E23744] hover:bg-[#CB202D] text-white shadow-sm hover:shadow-md transition-all duration-200"
+                  className="group flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-[#E23744] hover:bg-[#CB202D] text-white shadow-sm hover:shadow-md transition-all duration-200"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center font-black text-lg">
-                      Z
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-2 shadow-xs flex-shrink-0">
+                      <svg viewBox="0 0 100 24" className="w-full h-auto" fill="#E23744">
+                        <path d="M12.2 4.2H2.8l7.2 11.2H2.4v4.4h11.8l-7.2-11.2h7.2V4.2zm13.1 7.4c-4.3 0-7.4 3.2-7.4 7.6 0 4.4 3.1 7.6 7.4 7.6 4.3 0 7.4-3.2 7.4-7.6 0-4.4-3.1-7.6-7.4-7.6zm0 11c-2.1 0-3.5-1.7-3.5-3.4 0-1.8 1.4-3.4 3.5-3.4 2.1 0 3.5 1.7 3.5 3.4 0 1.8-1.4 3.4-3.5 3.4zm16.5-11c-2.3 0-3.9 1.2-4.6 2.6V11.8h-3.8v14.6h3.8v-8.1c0-2 1.3-3.1 2.8-3.1 1.6 0 2.6 1 2.6 2.8v8.4h3.8v-8.8c0-3.7-2-6-4.6-6zm20.8 0c-2.3 0-3.9 1.2-4.6 2.6V11.8h-3.8v14.6h3.8v-8.1c0-2 1.3-3.1 2.8-3.1 1.6 0 2.6 1 2.6 2.8v8.4h3.8v-8.8c0-3.7-2-6-4.6-6zm16.8 0c-4.4 0-7.3 3.2-7.3 7.6 0 4.4 3 7.6 7.3 7.6 2.8 0 5-1.4 6.1-3.6l-3.3-1.6c-.6 1.1-1.7 1.8-2.8 1.8-1.9 0-3.2-1.3-3.4-3h10.2c.1-.5.1-.9.1-1.4 0-4.3-2.7-7.4-6.9-7.4zm-3.4 6.2c.2-1.6 1.4-2.8 3.3-2.8 1.8 0 3 1.2 3.2 2.8h-6.5zm19.9-6.2c-2.4 0-4.2 1.3-4.9 3.1V4.2h-3.8v22.2h3.8v-1.9c.7 1.6 2.5 2.7 4.9 2.7 4.2 0 7.4-3.2 7.4-7.6 0-4.4-3.2-7.6-7.4-7.6zm-.9 11.4c-2.1 0-3.6-1.6-3.6-3.8 0-2.2 1.5-3.8 3.6-3.8 2.1 0 3.6 1.6 3.6 3.8 0 2.2-1.5 3.8-3.6 3.8z"/>
+                      </svg>
                     </div>
                     <div>
-                      <div className="font-extrabold text-base leading-tight">Order {portionLabel} on Zomato</div>
-                      <div className="text-[11px] text-white/80">Direct link to {portionLabel.toLowerCase()} dish</div>
+                      <div className="font-extrabold text-base leading-tight flex items-center gap-2">
+                        <span>Order on Zomato</span>
+                        <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full">Partner</span>
+                      </div>
+                      <div className="text-[11px] text-white/85 mt-0.5">Direct {portionLabel.toLowerCase()} portion on Zomato</div>
                     </div>
                   </div>
-                  <span className="text-lg group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
                 </a>
               )}
 
@@ -128,18 +133,28 @@ function OrderOnlineModal({ isOpen, onClose, item, branchAddress }) {
                   href={platforms.swiggy}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between p-4 rounded-2xl bg-[#FC8019] hover:bg-[#E26A08] text-white shadow-sm hover:shadow-md transition-all duration-200"
+                  className="group flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-[#FC8019] hover:bg-[#E26A08] text-white shadow-sm hover:shadow-md transition-all duration-200"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center font-black text-lg">
-                      S
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-2 shadow-xs flex-shrink-0">
+                      <svg viewBox="0 0 48 48" className="w-8 h-8" fill="none">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M24 4C14.059 4 6 12.059 6 22c0 8.04 5.309 14.84 12.637 17.155l.89.282c.42.133.722.508.756.945l.383 4.887a1.2 1.2 0 002.164.674l5.12-6.554a1.2 1.2 0 01.944-.464H29c9.941 0 18-8.059 18-18C47 12.059 38.941 4 29 4h-5zm3.2 10.5c0-1.767-1.433-3.2-3.2-3.2-1.767 0-3.2 1.433-3.2 3.2 0 1.272.742 2.37 1.815 2.883l-3.905 4.881a1.2 1.2 0 00.937 1.95h3.153v7.386a1.2 1.2 0 002.049.849l7.2-7.2a1.2 1.2 0 00-.849-2.049h-3.6v-5.617c1.073-.513 1.815-1.611 1.815-2.883z"
+                          fill="#FC8019"
+                        />
+                      </svg>
                     </div>
                     <div>
-                      <div className="font-extrabold text-base leading-tight">Order {portionLabel} on Swiggy</div>
-                      <div className="text-[11px] text-white/80">Direct link to {portionLabel.toLowerCase()} dish</div>
+                      <div className="font-extrabold text-base leading-tight flex items-center gap-2">
+                        <span>Order on Swiggy</span>
+                        <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full">Partner</span>
+                      </div>
+                      <div className="text-[11px] text-white/85 mt-0.5">Direct {portionLabel.toLowerCase()} portion on Swiggy</div>
                     </div>
                   </div>
-                  <span className="text-lg group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
                 </a>
               )}
 
@@ -149,22 +164,32 @@ function OrderOnlineModal({ isOpen, onClose, item, branchAddress }) {
                   href={platforms.ownly}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between p-4 rounded-2xl bg-[#4F46E5] hover:bg-[#4338CA] text-white shadow-sm hover:shadow-md transition-all duration-200"
+                  className="group flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-[#4F46E5] hover:bg-[#4338CA] text-white shadow-sm hover:shadow-md transition-all duration-200"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center font-black text-lg text-white">
-                      O
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center p-2 shadow-xs flex-shrink-0">
+                      <svg viewBox="0 0 48 48" className="w-8 h-8" fill="none">
+                        <circle cx="24" cy="24" r="22" fill="#EEF2FF" />
+                        <path
+                          d="M14 26a5 5 0 100-10 5 5 0 000 10zm20 0a5 5 0 100-10 5 5 0 000 10zM19 21h10M24 16v10M17 32h14a2 2 0 002-2v-2H15v2a2 2 0 002 2z"
+                          stroke="#4F46E5"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </div>
                     <div>
-                      <div className="font-extrabold text-base leading-tight text-white">
-                        Order {portionLabel} on Ownly
+                      <div className="font-extrabold text-base leading-tight flex items-center gap-2">
+                        <span>Order on Ownly</span>
+                        <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full">Direct Order</span>
                       </div>
-                      <div className="text-[11px] text-indigo-100">
-                        Direct link to {portionLabel.toLowerCase()} dish
+                      <div className="text-[11px] text-indigo-100 mt-0.5">
+                        Direct {portionLabel.toLowerCase()} portion via Ownly
                       </div>
                     </div>
                   </div>
-                  <span className="text-lg group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
                 </a>
               )}
             </div>
@@ -293,15 +318,33 @@ function MenuItemCard({ item, onOrderOnline }) {
           </span>
         </div>
 
-        {/* Distinctive Green "Order Online" Button */}
+        {/* Distinctive "Order Online" Button with Partner Badges */}
         {canOrderOnline ? (
           <button
             type="button"
             onClick={() => onOrderOnline(item)}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+            className="w-full bg-[#141414] hover:bg-black active:bg-zinc-900 text-white font-bold text-xs sm:text-sm py-2.5 px-3.5 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-between cursor-pointer active:scale-[0.99]"
           >
-            <span>Order {portionLabel} Online</span>
-            <span className="text-emerald-200 text-xs">🛵</span>
+            <div className="flex items-center gap-1.5 truncate">
+              <span>Order {portionLabel} Online</span>
+            </div>
+            <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
+              {hasZomato && (
+                <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-md bg-[#E23744] text-[10px] font-extrabold text-white leading-none shadow-2xs" title="Available on Zomato">
+                  Zomato
+                </span>
+              )}
+              {hasSwiggy && (
+                <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-md bg-[#FC8019] text-[10px] font-extrabold text-white leading-none shadow-2xs" title="Available on Swiggy">
+                  Swiggy
+                </span>
+              )}
+              {hasOwnly && (
+                <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-md bg-[#4F46E5] text-[10px] font-extrabold text-white leading-none shadow-2xs" title="Available on Ownly">
+                  Ownly
+                </span>
+              )}
+            </div>
           </button>
         ) : (
           <div className="text-center py-2 px-3 rounded-xl bg-gray-50 border border-gray-100 text-[11px] font-medium text-gray-400 italic">

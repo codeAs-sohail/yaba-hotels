@@ -183,6 +183,15 @@ export const dashboardApi = authApi.injectEndpoints({
           : [{ type: 'Feedback', id: 'LIST' }],
     }),
 
+    createFeedback: builder.mutation({
+      query: (body) => ({
+        url: 'feedback/',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'Feedback', id: 'LIST' }],
+    }),
+
     toggleFeedbackVisibility: builder.mutation({
       query: ({ id, is_featured }) => ({
         url: `feedback/${id}/`,
@@ -221,6 +230,7 @@ export const {
   useUpdateBranchMutation,
   useDeleteBranchMutation,
   useGetFeedbacksQuery,
+  useCreateFeedbackMutation,
   useToggleFeedbackVisibilityMutation,
   useGetCategoriesQuery,
 } = dashboardApi;
