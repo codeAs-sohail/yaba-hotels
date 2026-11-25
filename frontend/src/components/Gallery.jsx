@@ -178,10 +178,16 @@ export default function Gallery() {
                       className="group relative aspect-square rounded-2xl overflow-hidden bg-[#141414]/5 border border-[#141414]/10 shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#E85D16]"
                     >
                       <img
+                        key={resolvedUrl}
                         src={resolvedUrl}
                         alt={`Restaurant Photo ${idx + 1}`}
                         loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
+                        onLoad={(e) => {
+                          e.currentTarget.style.display = '';
+                          const placeholder = e.currentTarget.parentElement?.querySelector('.img-error-placeholder');
+                          if (placeholder) placeholder.remove();
+                        }}
                         onError={(e) => {
                           // Show a friendly placeholder instead of a blank box
                           e.currentTarget.style.display = 'none';

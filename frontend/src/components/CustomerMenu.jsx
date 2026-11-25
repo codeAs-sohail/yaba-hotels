@@ -246,10 +246,17 @@ function MenuItemCard({ item, onOrderOnline }) {
         <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden bg-[#FFF8F0] mb-4 border border-[#141414]/6">
           {item.image ? (
             <img
+              key={item.image}
               src={resolveImageUrl(item.image)}
               alt={itemName}
               loading="lazy"
               className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
+              onLoad={(e) => {
+                e.currentTarget.style.display = '';
+                if (e.currentTarget.nextSibling) {
+                  e.currentTarget.nextSibling.style.display = 'none';
+                }
+              }}
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 if (e.currentTarget.nextSibling) {

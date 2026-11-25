@@ -356,13 +356,16 @@ class GalleryDetailView(generics.RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         old_image = instance.image_link
-        data = request.data.copy()
+        payload = {}
+
+        if 'image_link' in request.data:
+            payload['image_link'] = request.data.get('image_link')
 
         image_file = request.FILES.get('image')
         if image_file:
             try:
                 uploaded_url = upload_image_to_supabase(image_file, folder="gallery")
-                data['image_link'] = uploaded_url
+                payload['image_link'] = uploaded_url
             except ValueError as ve:
                 return Response({'error': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
@@ -372,7 +375,17 @@ class GalleryDetailView(generics.RetrieveUpdateDestroyAPIView):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
-        serializer = self.get_serializer(instance, data=data, partial=True)
+        if 'is_visible' in request.data and request.data.get('is_visible') not in (None, ''):
+            raw_visible = request.data.get('is_visible')
+            if isinstance(raw_visible, bool):
+                payload['is_visible'] = raw_visible
+            else:
+                payload['is_visible'] = str(raw_visible).strip().lower() in ('true', '1', 'yes', 'on')
+        elif image_file:
+            # Replacing a gallery photo without explicit hide flag ensures it is visible to customers
+            payload['is_visible'] = True
+
+        serializer = self.get_serializer(instance, data=payload, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 

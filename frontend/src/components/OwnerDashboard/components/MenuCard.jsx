@@ -19,10 +19,17 @@ export default function MenuCard({ item, onEdit, onDelete }) {
         <div className="relative aspect-[16/10] bg-[#141414]/5 overflow-hidden">
           {item.image ? (
             <img
+              key={item.image}
               src={resolveImageUrl(item.image)}
               alt={item.item}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
+              onLoad={(e) => {
+                e.currentTarget.style.display = '';
+                if (e.currentTarget.nextSibling) {
+                  e.currentTarget.nextSibling.style.display = 'none';
+                }
+              }}
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 if (e.currentTarget.nextSibling) {

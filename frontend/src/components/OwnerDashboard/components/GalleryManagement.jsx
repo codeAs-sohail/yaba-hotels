@@ -85,9 +85,7 @@ export default function GalleryManagement() {
     const targetToReplace = replaceTarget;
     const formData = new FormData();
     formData.append('image', fileToUpload);
-    if (!replaceTarget) {
-      formData.append('is_visible', 'true');
-    }
+    formData.append('is_visible', 'true');
 
     // Close modal immediately so the user can continue navigating freely,
     // while the async upload runs with the animated circle and progress line.
@@ -192,10 +190,16 @@ export default function GalleryManagement() {
               >
                 <div className="relative aspect-square overflow-hidden bg-[#141414]/5 group">
                   <img
+                    key={img.image_link}
                     src={resolveImageUrl(img.image_link)}
                     alt={`Gallery #${img.id}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
+                    onLoad={(e) => {
+                      e.currentTarget.style.display = '';
+                      const placeholder = e.currentTarget.parentElement?.querySelector('.img-error-placeholder');
+                      if (placeholder) placeholder.remove();
+                    }}
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                       const parent = e.currentTarget.parentElement;
