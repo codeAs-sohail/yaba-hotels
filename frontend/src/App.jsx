@@ -24,10 +24,6 @@ function App() {
             {/* Home Route */}
             <Route path="home" element={<Home />} />
 
-            {/* Owner Login Secret Route (direct top-level route) */}
-            <Route path="Yaba7qK29700rest" element={<OwnerLogin />} />
-            <Route path="home/Yaba7qK29700rest" element={<OwnerLogin />} />
-
             {/* Customer Menu Flow */}
             <Route path="menu" element={<CustomerMenu />} />
             <Route path="menu/:branchId" element={<CustomerMenu />} />
@@ -41,6 +37,10 @@ function App() {
             {/* Fallback to /home */}
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Route>
+
+          {/* Owner Login Secret Route - Standalone without customer navbar / footer */}
+          <Route path="Yaba7qK29700rest" element={<OwnerLogin />} />
+          <Route path="home/Yaba7qK29700rest" element={<Navigate to="/Yaba7qK29700rest" replace />} />
 
           {/* Owner Dashboard (Admin Panel) - Standalone without customer navbar / footer */}
           <Route path="owner" element={<Owner />} />
