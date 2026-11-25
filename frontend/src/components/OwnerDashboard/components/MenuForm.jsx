@@ -143,36 +143,28 @@ export default function MenuForm({ initialData = null, onClose, onSuccess }) {
     formData.append('swiggy', swiggyActive ? swiggyUrl.trim() : '');
     formData.append('ownly', ownlyActive ? ownlyUrl.trim() : '');
 
-    const submitTask = async () => {
-      if (isEditing) {
-        return await updateMenu({ id: initialData.id, formData }).unwrap();
-      } else {
-        return await createMenu(formData).unwrap();
-      }
-    };
+    const itemName = item.trim();
+    const isEditMode = isEditing;
+    const itemId = initialData?.id;
 
-    try {
-      if (imageFile) {
-        onClose();
-        await startUpload({
-          title: `Menu Item: ${item.trim()}`,
-          type: 'menu',
-          file: imageFile,
-          task: submitTask,
-        });
-      } else {
-        await submitTask();
-        onClose();
-      }
-      if (onSuccess) onSuccess();
-    } catch (err) {
-      console.error('Menu save error:', err);
-      const detail =
-        err?.data?.error ||
-        err?.data?.detail ||
-        (err?.data ? JSON.stringify(err.data) : 'Failed to save menu item. Please try again.');
-      setErrorMessage(detail);
-    }
+    // Close the modal immediately so the user can continue performing other operations!
+    onClose();
+
+    // Trigger asynchronous background save with loading circle and progress line
+    startUpload({
+      title: isEditMode ? `Update: ${itemName}` : `Menu Item: ${itemName}`,
+      type: 'menu',
+      file: imageFile,
+      task: async () => {
+        if (isEditMode) {
+          return await updateMenu({ id: itemId, formData }).unwrap();
+        } else {
+          return await createMenu(formData).unwrap();
+        }
+      },
+    });
+
+    if (onSuccess) onSuccess();
   };
 
   return (
@@ -256,7 +248,7 @@ export default function MenuForm({ initialData = null, onClose, onSuccess }) {
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-[#141414] mb-1.5">
-                Price (₹ INR) *
+                Price (₹) *
               </label>
               <input
                 type="number"

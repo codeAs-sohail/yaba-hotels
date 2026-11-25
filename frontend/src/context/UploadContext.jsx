@@ -88,7 +88,7 @@ export function UploadProvider({ children }) {
         err?.data?.error ||
         err?.data?.detail ||
         err?.message ||
-        'Upload failed. Please check network or file size.';
+        'Operation failed. Please check network or file size.';
 
       setUploads((prev) =>
         prev.map((item) =>
@@ -98,7 +98,8 @@ export function UploadProvider({ children }) {
         )
       );
 
-      throw err;
+      console.warn('Async upload/save task failed:', err);
+      return { error: err };
     }
   }, [dismissUpload]);
 
@@ -192,9 +193,11 @@ function UploadToastContainer({ uploads, onDismiss }) {
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-1">
                 <h4 className="text-xs sm:text-sm font-bold text-[#141414] truncate">
-                  {upload.status === 'uploading' && 'Uploading Image...'}
-                  {upload.status === 'completed' && 'Upload Successful!'}
-                  {upload.status === 'error' && 'Upload Failed'}
+                  {upload.status === 'uploading' &&
+                    (upload.type === 'menu' ? 'Saving Menu Item...' : 'Uploading Image...')}
+                  {upload.status === 'completed' &&
+                    (upload.type === 'menu' ? 'Menu Item Saved Successfully!' : 'Upload Successful!')}
+                  {upload.status === 'error' && 'Operation Failed'}
                 </h4>
                 <button
                   type="button"
@@ -213,13 +216,15 @@ function UploadToastContainer({ uploads, onDismiss }) {
               {/* Status explanation */}
               {upload.status === 'uploading' && (
                 <p className="text-[10px] text-amber-700 mt-1 font-medium leading-tight">
-                  Uploading asynchronously to storage. You can freely switch tabs or pages!
+                  Running asynchronously in background. You can freely switch tabs or perform other operations!
                 </p>
               )}
 
               {upload.status === 'completed' && (
                 <p className="text-[10px] text-emerald-700 mt-1 font-medium leading-tight">
-                  Saved securely and live in your restaurant showcase.
+                  {upload.type === 'menu'
+                    ? 'Saved to menu and live across customer devices.'
+                    : 'Saved securely and live in your restaurant showcase.'}
                 </p>
               )}
 
