@@ -26,8 +26,9 @@ export const dashboardApi = authApi.injectEndpoints({
           ? [
               ...result.map(({ id }) => ({ type: 'Menu', id })),
               { type: 'Menu', id: 'LIST' },
+              'Menu',
             ]
-          : [{ type: 'Menu', id: 'LIST' }],
+          : [{ type: 'Menu', id: 'LIST' }, 'Menu'],
     }),
 
     getMenuById: builder.query({
@@ -42,6 +43,7 @@ export const dashboardApi = authApi.injectEndpoints({
         body: formData,
       }),
       invalidatesTags: [
+        'Menu',
         { type: 'Menu', id: 'LIST' },
         { type: 'Branch', id: 'LIST' },
       ],
@@ -54,6 +56,7 @@ export const dashboardApi = authApi.injectEndpoints({
         body: formData,
       }),
       invalidatesTags: (result, error, { id }) => [
+        'Menu',
         { type: 'Menu', id },
         { type: 'Menu', id: 'LIST' },
       ],
@@ -65,6 +68,7 @@ export const dashboardApi = authApi.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: [
+        'Menu',
         { type: 'Menu', id: 'LIST' },
         { type: 'Branch', id: 'LIST' },
       ],
@@ -80,8 +84,9 @@ export const dashboardApi = authApi.injectEndpoints({
           ? [
               ...result.map(({ id }) => ({ type: 'Gallery', id })),
               { type: 'Gallery', id: 'LIST' },
+              'Gallery',
             ]
-          : [{ type: 'Gallery', id: 'LIST' }],
+          : [{ type: 'Gallery', id: 'LIST' }, 'Gallery'],
     }),
 
     createGallery: builder.mutation({
@@ -90,7 +95,7 @@ export const dashboardApi = authApi.injectEndpoints({
         method: 'POST',
         body: formData,
       }),
-      invalidatesTags: [{ type: 'Gallery', id: 'LIST' }],
+      invalidatesTags: ['Gallery', { type: 'Gallery', id: 'LIST' }],
     }),
 
     updateGallery: builder.mutation({
@@ -100,6 +105,7 @@ export const dashboardApi = authApi.injectEndpoints({
         body: formData,
       }),
       invalidatesTags: (result, error, { id }) => [
+        'Gallery',
         { type: 'Gallery', id },
         { type: 'Gallery', id: 'LIST' },
       ],
@@ -110,7 +116,7 @@ export const dashboardApi = authApi.injectEndpoints({
         url: `gallery/${id}/`,
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'Gallery', id: 'LIST' }],
+      invalidatesTags: ['Gallery', { type: 'Gallery', id: 'LIST' }],
     }),
 
     toggleGalleryVisibility: builder.mutation({
@@ -120,6 +126,7 @@ export const dashboardApi = authApi.injectEndpoints({
         body: { is_visible },
       }),
       invalidatesTags: (result, error, { id }) => [
+        'Gallery',
         { type: 'Gallery', id },
         { type: 'Gallery', id: 'LIST' },
       ],

@@ -412,6 +412,8 @@ export default function CustomerMenu() {
   } = useGetMenusQuery(activeBranchId, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
+    refetchOnReconnect: true,
+    pollingInterval: 10000,
   });
 
   // Fetch categories dynamically from Category API
@@ -424,7 +426,20 @@ export default function CustomerMenu() {
       document.title = 'Restaurant Menu | Yaba Fast Food';
     }
     window.scrollTo(0, 0);
-  }, [currentBranch]);
+    refetch();
+
+    const handleUpdate = () => {
+      refetch();
+    };
+
+    window.addEventListener('yaba:data_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener('yaba:data_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, [currentBranch, refetch]);
 
   // Handle branch switching
   const handleBranchChange = (newBranchId) => {

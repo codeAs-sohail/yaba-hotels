@@ -10,14 +10,37 @@ import { resolveImageUrl } from '../api/config';
  * and loading skeletons.
  */
 export default function Gallery() {
-  const { data: rawGallery = [], isLoading, isFetching } = useGetGalleryQuery();
+  const {
+    data: rawGallery = [],
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetGalleryQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    pollingInterval: 10000,
+  });
   const gallery = rawGallery.filter((img) => img.is_visible !== false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   useEffect(() => {
     document.title = 'Gallery | Yaba Fast Food — Authentic Dining Showcase';
     window.scrollTo(0, 0);
-  }, []);
+    refetch();
+
+    const handleUpdate = () => {
+      refetch();
+    };
+
+    window.addEventListener('yaba:data_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener('yaba:data_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, [refetch]);
 
   // Keyboard navigation for Lightbox (Escape to close, ArrowLeft / ArrowRight to cycle)
   useEffect(() => {

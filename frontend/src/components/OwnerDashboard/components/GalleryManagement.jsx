@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useGetGalleryQuery,
   useCreateGalleryMutation,
@@ -21,7 +21,24 @@ export default function GalleryManagement() {
   } = useGetGalleryQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
+    refetchOnReconnect: true,
   });
+
+  useEffect(() => {
+    refetchGallery();
+
+    const handleUpdate = () => {
+      refetchGallery();
+    };
+
+    window.addEventListener('yaba:data_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener('yaba:data_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, [refetchGallery]);
   const [createGallery, { isLoading: isCreating }] = useCreateGalleryMutation();
   const [updateGallery, { isLoading: isUpdating }] = useUpdateGalleryMutation();
   const [deleteGallery, { isLoading: isDeleting }] = useDeleteGalleryMutation();

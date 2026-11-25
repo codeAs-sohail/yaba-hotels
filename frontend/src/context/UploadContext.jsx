@@ -73,6 +73,9 @@ export function UploadProvider({ children }) {
       try {
         dispatch(
           authApi.util.invalidateTags([
+            'Menu',
+            'Gallery',
+            'Branch',
             { type: 'Menu', id: 'LIST' },
             { type: 'Gallery', id: 'LIST' },
             { type: 'Branch', id: 'LIST' },
@@ -81,6 +84,12 @@ export function UploadProvider({ children }) {
       } catch (invalErr) {
         console.warn('Tag invalidation notice:', invalErr);
       }
+
+      // Broadcast update across tabs and same window to trigger immediate GET refetch
+      try {
+        localStorage.setItem('yaba_last_updated', Date.now().toString());
+        window.dispatchEvent(new CustomEvent('yaba:data_updated', { detail: { type } }));
+      } catch (_) {}
 
       setUploads((prev) =>
         prev.map((item) =>

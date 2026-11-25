@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useGetMenusQuery,
   useGetBranchesQuery,
@@ -30,7 +30,24 @@ export default function MenuManagement() {
   } = useGetMenusQuery(selectedBranchId, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
+    refetchOnReconnect: true,
   });
+
+  useEffect(() => {
+    refetchMenus();
+
+    const handleUpdate = () => {
+      refetchMenus();
+    };
+
+    window.addEventListener('yaba:data_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener('yaba:data_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, [selectedBranchId, refetchMenus]);
   const [deleteMenu, { isLoading: isDeleting }] = useDeleteMenuMutation();
 
   const handleOpenAdd = () => {
