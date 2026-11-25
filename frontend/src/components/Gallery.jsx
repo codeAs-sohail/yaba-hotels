@@ -155,13 +155,11 @@ export default function Gallery() {
                     >
                       <img
                         src={resolvedUrl}
-                        alt={`Yaba Restaurant Photo ${idx + 1}`}
+                        alt={`Restaurant Photo ${idx + 1}`}
                         loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
                         onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src =
-                            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect fill="%23FFFBEA" width="400" height="400"/><text fill="%23766D65" font-family="sans-serif" font-size="16" font-weight="bold" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle">Yaba Fast Food</text></svg>';
+                          e.currentTarget.style.display = 'none';
                         }}
                       />
 
@@ -252,7 +250,7 @@ export default function Gallery() {
           >
             <img
               src={resolveImageUrl(activePhoto.image_link)}
-              alt={`Yaba Showcase ${selectedImageIndex + 1}`}
+              alt={`Photo ${selectedImageIndex + 1}`}
               className="max-h-[82vh] max-w-full rounded-2xl object-contain shadow-2xl border border-white/10"
             />
           </div>

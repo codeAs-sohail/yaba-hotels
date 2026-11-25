@@ -160,9 +160,7 @@ export default function GalleryManagement() {
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
                 onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src =
-                    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect fill="%23FFFBEA" width="300" height="300"/><text fill="%23766D65" font-family="sans-serif" font-size="14" font-weight="bold" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle">Yaba Showcase</text></svg>';
+                  e.currentTarget.style.display = 'none';
                 }}
               />
 

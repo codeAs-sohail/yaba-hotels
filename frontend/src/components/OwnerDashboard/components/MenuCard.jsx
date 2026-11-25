@@ -24,17 +24,20 @@ export default function MenuCard({ item, onEdit, onDelete }) {
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
               onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src =
-                  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"><rect fill="%23FFFBEA" width="300" height="200"/><text fill="%23766D65" font-family="sans-serif" font-size="14" font-weight="bold" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle">Yaba Fast Food</text></svg>';
+                e.currentTarget.style.display = 'none';
+                if (e.currentTarget.nextSibling) {
+                  e.currentTarget.nextSibling.style.display = 'flex';
+                }
               }}
             />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-[#555555]/50 bg-[#FFFBEA]">
-              <span className="text-3xl mb-1">🍲</span>
-              <span className="text-xs">No image uploaded</span>
-            </div>
-          )}
+          ) : null}
+          <div
+            className="w-full h-full flex flex-col items-center justify-center text-[#555555]/50 bg-[#FFFBEA]"
+            style={{ display: item.image ? 'none' : 'flex' }}
+          >
+            <span className="text-3xl mb-1">🍲</span>
+            <span className="text-xs">No image uploaded</span>
+          </div>
 
           {/* Portion Badge */}
           <div className="absolute top-3 left-3">
