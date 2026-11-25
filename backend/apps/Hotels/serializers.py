@@ -96,8 +96,15 @@ class MenuSerializer(serializers.ModelSerializer):
         return ret
 
     def get_online_platforms(self, obj):
-        # Retrieve associated OnlinePlatforms record
-        platform = obj.online_platforms.first()
+        # Retrieve associated OnlinePlatforms record using in-memory prefetch cache to avoid N+1 queries
+        cache = getattr(obj, '_prefetched_objects_cache', {})
+        if 'online_platforms' in cache:
+            platforms = cache['online_platforms']
+            platform = platforms[0] if len(platforms) > 0 else None
+        else:
+            platforms = list(obj.online_platforms.all())
+            platform = platforms[0] if platforms else None
+
         if platform:
             return {
                 'id': platform.id,
