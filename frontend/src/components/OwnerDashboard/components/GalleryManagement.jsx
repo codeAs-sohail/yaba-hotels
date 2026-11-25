@@ -85,6 +85,9 @@ export default function GalleryManagement() {
     const targetToReplace = replaceTarget;
     const formData = new FormData();
     formData.append('image', fileToUpload);
+    if (!replaceTarget) {
+      formData.append('is_visible', 'true');
+    }
 
     // Close modal immediately so the user can continue navigating freely,
     // while the async upload runs with the animated circle and progress line.

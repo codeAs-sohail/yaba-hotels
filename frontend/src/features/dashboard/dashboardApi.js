@@ -142,8 +142,9 @@ export const dashboardApi = authApi.injectEndpoints({
           ? [
               ...result.map(({ id }) => ({ type: 'Branch', id })),
               { type: 'Branch', id: 'LIST' },
+              'Branch',
             ]
-          : [{ type: 'Branch', id: 'LIST' }],
+          : [{ type: 'Branch', id: 'LIST' }, 'Branch'],
     }),
 
     getBranchById: builder.query({
@@ -157,7 +158,7 @@ export const dashboardApi = authApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: [{ type: 'Branch', id: 'LIST' }],
+      invalidatesTags: ['Branch', { type: 'Branch', id: 'LIST' }],
     }),
 
     updateBranch: builder.mutation({
@@ -167,6 +168,7 @@ export const dashboardApi = authApi.injectEndpoints({
         body,
       }),
       invalidatesTags: (result, error, { id }) => [
+        'Branch',
         { type: 'Branch', id },
         { type: 'Branch', id: 'LIST' },
       ],
@@ -178,7 +180,9 @@ export const dashboardApi = authApi.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: [
+        'Branch',
         { type: 'Branch', id: 'LIST' },
+        'Menu',
         { type: 'Menu', id: 'LIST' },
       ],
     }),
@@ -198,8 +202,9 @@ export const dashboardApi = authApi.injectEndpoints({
           ? [
               ...result.map(({ id }) => ({ type: 'Feedback', id })),
               { type: 'Feedback', id: 'LIST' },
+              'Feedback',
             ]
-          : [{ type: 'Feedback', id: 'LIST' }],
+          : [{ type: 'Feedback', id: 'LIST' }, 'Feedback'],
     }),
 
     getPublicFeedbacks: builder.query({
@@ -209,7 +214,7 @@ export const dashboardApi = authApi.injectEndpoints({
         }
         return 'feedback/?is_featured=true';
       },
-      providesTags: [{ type: 'Feedback', id: 'PUBLIC_LIST' }],
+      providesTags: ['Feedback', { type: 'Feedback', id: 'PUBLIC_LIST' }],
     }),
 
     createFeedback: builder.mutation({
@@ -218,7 +223,7 @@ export const dashboardApi = authApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: [{ type: 'Feedback', id: 'LIST' }],
+      invalidatesTags: ['Feedback', { type: 'Feedback', id: 'LIST' }, { type: 'Feedback', id: 'PUBLIC_LIST' }],
     }),
 
     toggleFeedbackVisibility: builder.mutation({
@@ -228,6 +233,7 @@ export const dashboardApi = authApi.injectEndpoints({
         body: { is_featured },
       }),
       invalidatesTags: (result, error, { id }) => [
+        'Feedback',
         { type: 'Feedback', id },
         { type: 'Feedback', id: 'LIST' },
         { type: 'Feedback', id: 'PUBLIC_LIST' },

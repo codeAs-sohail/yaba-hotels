@@ -75,6 +75,10 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Auth", "Menu", "Gallery", "Branch", "Feedback", "Category"],
+  refetchOnMountOrArgChange: true,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
+  keepUnusedDataFor: 15,
   endpoints: (builder) => ({
     // path("Login/", TokenObtainPairView.as_view(), name="login")
     login: builder.mutation({

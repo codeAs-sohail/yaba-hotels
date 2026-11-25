@@ -127,6 +127,11 @@ class MenuListCreateView(generics.ListCreateAPIView):
                 queryset = queryset.none()
         return queryset
 
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        return response
+
     @transaction.atomic #->If anything fails during transaction it gets rollback 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()#copy because->Because we may need to modify this data before passing it to the serializer.
@@ -286,16 +291,21 @@ class GalleryListCreateView(generics.ListCreateAPIView):
             return [AllowAny()]
         return [IsAuthenticated()]
 
-    def create(self, request, *args, **kwargs):
-        data = request.data.copy()
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        return response
 
+    def create(self, request, *args, **kwargs):
+        # Extract fields into a standard dict so DRF BooleanField does not treat
+        # omitted multipart/form-data fields as False (QueryDict HTML checkbox quirk).
+        image_link = request.data.get('image_link', '')
 
         # Handle file upload
         image_file = request.FILES.get('image')
         if image_file:
             try:
-                uploaded_url = upload_image_to_supabase(image_file, folder="gallery")
-                data['image_link'] = uploaded_url
+                image_link = upload_image_to_supabase(image_file, folder="gallery")
             except ValueError as ve:
                 return Response({'error': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
@@ -305,10 +315,24 @@ class GalleryListCreateView(generics.ListCreateAPIView):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
-        if not data.get('image_link'):
+        if not image_link:
             return Response({'error': 'Please provide an image file.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = self.get_serializer(data=data)
+        # Default is_visible to True whenever not explicitly provided
+        raw_visible = request.data.get('is_visible')
+        if raw_visible is None or raw_visible == '':
+            is_visible = True
+        elif isinstance(raw_visible, bool):
+            is_visible = raw_visible
+        else:
+            is_visible = str(raw_visible).strip().lower() in ('true', '1', 'yes', 'on')
+
+        payload = {
+            'image_link': image_link,
+            'is_visible': is_visible,
+        }
+
+        serializer = self.get_serializer(data=payload)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
