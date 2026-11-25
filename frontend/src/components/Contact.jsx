@@ -134,15 +134,9 @@ export default function Contact() {
                       </div>
 
                       {/* Prominent Branch Address */}
-                      <h2 className="font-serif text-2xl font-black text-[#141414] group-hover:text-[#E85D16] transition-colors leading-tight mb-2">
+                      <h2 className="font-serif text-2xl font-black text-[#141414] group-hover:text-[#E85D16] transition-colors leading-tight mb-5">
                         {branch.address}
                       </h2>
-
-                      {/* Timings */}
-                      <div className="flex items-center gap-1.5 text-xs text-[#766D65] mb-5">
-                        <span className="text-[#E85D16]">🕒</span>
-                        <span className="font-medium">1:00 PM – 1:30 AM (Late Night Wok)</span>
-                      </div>
 
                       {/* Contact Info Pills */}
                       <div className="space-y-3 pt-4 border-t border-[#141414]/8">
