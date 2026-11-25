@@ -11,22 +11,58 @@ _supabase_client = None
 _supabase_bucket = None
 
 
+DEFAULT_SUPABASE_URL = "https://dgsttpexaemtfsqdiept.supabase.co"
+DEFAULT_BUCKET_NAME = "menu-images"
+
+
+def _sanitize_supabase_url(url):
+    """
+    Sanitize Supabase URL to prevent Invalid URL exceptions.
+    Handles quotes, accidental database URLs, leading/trailing whitespace, and missing schemes.
+    """
+    if not url:
+        return DEFAULT_SUPABASE_URL
+    url = str(url).strip().strip("'\"").strip()
+    if url.startswith(('postgres://', 'postgresql://')):
+        # Database URL was mistakenly entered as SUPABASE_URL
+        return DEFAULT_SUPABASE_URL
+    if not url.startswith(('http://', 'https://')):
+        url = f"https://{url}"
+    return url.rstrip('/')
+
+
+def _sanitize_supabase_key(key):
+    """
+    Sanitize Supabase key string, stripping quotes and whitespace.
+    """
+    if not key:
+        return ""
+    return str(key).strip().strip("'\"").strip()
+
+
 def get_supabase_client():
     """
     Safely retrieve or initialize the Supabase client and storage bucket.
-    Returns (client, bucket) or (None, None) if credentials are not configured.
+    Sanitizes URL and credentials to prevent Invalid URL crashes.
     """
     global _supabase_client, _supabase_bucket
 
     if _supabase_bucket is not None:
         return _supabase_client, _supabase_bucket
 
-    supabase_url = getattr(settings, 'SUPABASE_URL', '')
-    supabase_key = getattr(settings, 'SUPABASE_SECRET_KEY', '')
-    bucket_name = getattr(settings, 'SUPABASE_BUCKET_NAME', 'menu-images')
+    raw_url = getattr(settings, 'SUPABASE_URL', '')
+    raw_key = getattr(settings, 'SUPABASE_SECRET_KEY', '')
+    raw_bucket = getattr(settings, 'SUPABASE_BUCKET_NAME', DEFAULT_BUCKET_NAME)
 
-    if not supabase_url or not supabase_key:
-        logger.info("Supabase credentials not configured in settings. Using local storage fallback.")
+    supabase_url = _sanitize_supabase_url(raw_url)
+    supabase_key = _sanitize_supabase_key(raw_key)
+    bucket_name = str(raw_bucket).strip().strip("'\"") if raw_bucket else DEFAULT_BUCKET_NAME
+
+    if not supabase_key:
+        logger.error(
+            "SUPABASE_SECRET_KEY is missing from environment settings. "
+            "Please configure SUPABASE_SECRET_KEY in Render Environment Variables."
+        )
         return None, None
 
     try:
@@ -35,7 +71,7 @@ def get_supabase_client():
         _supabase_bucket = _supabase_client.storage.from_(bucket_name)
         return _supabase_client, _supabase_bucket
     except Exception as e:
-        logger.warning(f"Could not connect to Supabase Storage: {e}. Will use local media fallback.")
+        logger.error(f"Could not connect to Supabase Storage with {supabase_url}: {e}")
         return None, None
 
 

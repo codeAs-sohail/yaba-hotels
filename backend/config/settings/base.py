@@ -215,6 +215,6 @@ SIMPLE_JWT = {
 
 
 # Supabase Storage Configuration
-SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_URL = os.getenv("SUPABASE_URL", "https://dgsttpexaemtfsqdiept.supabase.co")
 SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY", "")
 SUPABASE_BUCKET_NAME = os.getenv("SUPABASE_BUCKET_NAME", "menu-images")
