@@ -52,6 +52,7 @@ class Command(BaseCommand):
             "Noodles",
             "Fried Rice",
         ]
+        
         created_cat = 0
         for name in categories:
             _, created = Category.objects.get_or_create(name=name)

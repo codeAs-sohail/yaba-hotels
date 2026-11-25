@@ -386,7 +386,7 @@ class FeedbackListView(generics.ListCreateAPIView):
     """
     GET /api/feedback/?branch_id=<id>&is_featured=<true|false>
     List customer feedback (supports branch and featured filters).
-    Unauthenticated users can view featured feedbacks. Authenticated owners see all.
+    Unauthenticated users view only featured feedbacks. Authenticated owners see all unless filtered.
 
     POST /api/feedback/
     Submit customer feedback for a branch. Publicly accessible.
@@ -400,15 +400,13 @@ class FeedbackListView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Feedback.objects.select_related('branch').order_by('-created_at')
 
-        # If unauthenticated public visitor, strictly return only featured feedbacks
-        if not (self.request.user and self.request.user.is_authenticated):
+        is_featured = self.request.query_params.get('is_featured')
+        if is_featured in ['true', 'True', '1']:
             queryset = queryset.filter(is_featured=True)
-        else:
-            is_featured = self.request.query_params.get('is_featured')
-            if is_featured in ['true', 'True', '1']:
-                queryset = queryset.filter(is_featured=True)
-            elif is_featured in ['false', 'False', '0']:
-                queryset = queryset.filter(is_featured=False)
+        elif is_featured in ['false', 'False', '0']:
+            queryset = queryset.filter(is_featured=False)
+        elif not (self.request.user and self.request.user.is_authenticated):
+            queryset = queryset.filter(is_featured=True)
 
         branch_id = self.request.query_params.get('branch_id')
         if branch_id and branch_id not in ('all', 'undefined', 'null'):
@@ -427,6 +425,13 @@ class FeedbackDetailView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = FeedbackSerializer
     queryset = Feedback.objects.select_related('branch')
+
+    def perform_update(self, serializer):
+        is_featured = self.request.data.get('is_featured')
+        if is_featured is not None:
+            serializer.save(is_featured=bool(is_featured))
+        else:
+            serializer.save()
 
 
 # ==============================================================================

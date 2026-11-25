@@ -195,6 +195,16 @@ export const dashboardApi = authApi.injectEndpoints({
           : [{ type: 'Feedback', id: 'LIST' }],
     }),
 
+    getPublicFeedbacks: builder.query({
+      query: (branchId) => {
+        if (branchId && branchId !== 'all') {
+          return `feedback/?is_featured=true&branch_id=${branchId}`;
+        }
+        return 'feedback/?is_featured=true';
+      },
+      providesTags: [{ type: 'Feedback', id: 'PUBLIC_LIST' }],
+    }),
+
     createFeedback: builder.mutation({
       query: (body) => ({
         url: 'feedback/',
@@ -213,6 +223,7 @@ export const dashboardApi = authApi.injectEndpoints({
       invalidatesTags: (result, error, { id }) => [
         { type: 'Feedback', id },
         { type: 'Feedback', id: 'LIST' },
+        { type: 'Feedback', id: 'PUBLIC_LIST' },
       ],
     }),
 
@@ -243,6 +254,7 @@ export const {
   useUpdateBranchMutation,
   useDeleteBranchMutation,
   useGetFeedbacksQuery,
+  useGetPublicFeedbacksQuery,
   useCreateFeedbackMutation,
   useToggleFeedbackVisibilityMutation,
   useGetCategoriesQuery,

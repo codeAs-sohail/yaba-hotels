@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   useGetBranchesQuery,
   useCreateFeedbackMutation,
-  useGetFeedbacksQuery,
+  useGetPublicFeedbacksQuery,
 } from '../features/dashboard/dashboardApi';
 
 const RATING_OPTIONS = [
@@ -43,16 +43,10 @@ export default function Feedback() {
     }
   });
 
-  const { data: featuredFeedbacks = [] } = useGetFeedbacksQuery(undefined, {
+  const { data: visibleFeedbacks = [], isLoading: loadingFeedbacks } = useGetPublicFeedbacksQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
   });
-
-  // Approved by owner (is_featured: true) + local submission preview
-  const visibleFeedbacks = [
-    ...submittedFeedbacks.filter((s) => !featuredFeedbacks.some((f) => f.id === s.id)),
-    ...featuredFeedbacks,
-  ];
 
   useEffect(() => {
     document.title = 'Feedback | Yaba Fast Food';
@@ -117,16 +111,14 @@ export default function Feedback() {
         return updated;
       });
 
-      setSuccessMessage('Thank you! Your feedback has been recorded and is displayed below.');
+      setSuccessMessage('Thank you! Your feedback has been submitted to management. Once approved, it will appear on the website below.');
       setMessage('');
-
-      // Smooth scroll to the submitted feedback below
-      setTimeout(() => {
-        const section = document.getElementById('user-submitted-feedback-section');
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 150);
+      setFullName('');
+      setMobileNumber('');
+      setEmail('');
+      setBranchId('');
+      setStars(0);
+      setSelectedQualities([]);
     } catch (err) {
       console.error('Feedback submit failed:', err);
       const detail =

@@ -1,10 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import FoodArcCarousel from './FoodArcCarousel';
+import { useGetPublicFeedbacksQuery } from '../features/dashboard/dashboardApi';
 
 const Home = () => {
   const contentRef = useRef(null);
+  const { data: publicFeedbacks = [] } = useGetPublicFeedbacksQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
 
   // Subtle, sophisticated entrance animation for hero typography and CTA
   useEffect(() => {
@@ -74,6 +79,68 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Verified Guest Reviews Section (Visible only when reviews are approved by admin) */}
+      {publicFeedbacks.length > 0 && (
+        <section className="py-14 sm:py-20 bg-white border-t border-[#29211C]/8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#E85D16] bg-[#E85D16]/10 px-3 py-1 rounded-full">
+                  ★ Genuine Guest Reviews
+                </span>
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#29211C] tracking-tight mt-2.5">
+                  What Our Guests Say
+                </h2>
+              </div>
+              <Link
+                to="/feedback"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#29211C] hover:text-[#E85D16] transition-colors"
+              >
+                <span>Share your experience</span>
+                <span>→</span>
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+              {publicFeedbacks.slice(0, 6).map((fb) => (
+                <div
+                  key={fb.id}
+                  className="bg-[#FFFDF3] border border-[#F3E8B5] rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col justify-between transition-all hover:shadow-md"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <div className="flex items-center text-amber-400 text-sm">
+                        {'★'.repeat(fb.stars)}{'☆'.repeat(5 - fb.stars)}
+                      </div>
+                      <span className="text-[11px] text-[#766D65] font-medium">
+                        📍 {fb.branch_address ? fb.branch_address.split(',')[0] : 'Hyderabad'}
+                      </span>
+                    </div>
+
+                    {fb.message ? (
+                      <p className="text-sm text-[#3E342B] leading-relaxed italic line-clamp-4">
+                        "{fb.message}"
+                      </p>
+                    ) : (
+                      <p className="text-xs text-gray-400 italic">Rated {fb.stars} stars</p>
+                    )}
+                  </div>
+
+                  <div className="mt-5 pt-3 border-t border-gray-200/60 flex items-center justify-between">
+                    <span className="font-serif font-bold text-sm text-[#29211C]">
+                      {fb.name || 'Valued Guest'}
+                    </span>
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      ✓ Verified Diner
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

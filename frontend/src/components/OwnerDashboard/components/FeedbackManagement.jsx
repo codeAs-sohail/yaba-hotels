@@ -15,7 +15,15 @@ export default function FeedbackManagement() {
   const [togglingId, setTogglingId] = useState(null);
 
   const { data: branches = [], isLoading: loadingBranches } = useGetBranchesQuery();
-  const { data: feedbacks = [], isLoading: loadingFeedbacks, isFetching } = useGetFeedbacksQuery(selectedBranchId);
+  const {
+    data: feedbacks = [],
+    isLoading: loadingFeedbacks,
+    isFetching,
+    refetch: refetchFeedbacks,
+  } = useGetFeedbacksQuery(selectedBranchId, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
   const [toggleVisibility] = useToggleFeedbackVisibilityMutation();
 
   // Compute metrics
@@ -33,6 +41,7 @@ export default function FeedbackManagement() {
         id: feedback.id,
         is_featured: !feedback.is_featured,
       }).unwrap();
+      refetchFeedbacks();
     } catch (err) {
       console.error('Failed to update visibility:', err);
       alert('Failed to update feedback visibility. Please try again.');
