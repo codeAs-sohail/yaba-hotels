@@ -35,7 +35,7 @@ export default function OwnerDashboard() {
       console.warn('Logout API error:', err);
     } finally {
       dispatch(clearTokens());
-      navigate('/home/Yaba7qK29700rest', { replace: true });
+      navigate('/Yaba7qK29700rest', { replace: true });
     }
   };
 

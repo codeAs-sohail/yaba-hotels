@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLoginMutation } from '../features/auth/authApi';
-import { setTokens } from '../features/auth/authSlice';
+import { setTokens, clearTokens } from '../features/auth/authSlice';
 
 export default function OwnerLogin() {
   const [email, setEmail] = useState('');
@@ -14,6 +14,11 @@ export default function OwnerLogin() {
   const { access } = useSelector((state) => state.auth);
 
   const [login, { isLoading }] = useLoginMutation();
+
+  useEffect(() => {
+    // When landing on secret login page, clear any stale session so admin gets a fresh login
+    dispatch(clearTokens());
+  }, [dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,16 +112,16 @@ export default function OwnerLogin() {
               htmlFor="owner-email"
               className="block text-xs font-semibold uppercase tracking-wider text-[#29211C] mb-2"
             >
-              Email Address
+              Username or Email
             </label>
             <input
               id="owner-email"
-              type="email"
-              autoComplete="email"
+              type="text"
+              autoComplete="username"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="owner@yabahotels.com"
+              placeholder="admin or mk165202@gmail.com"
               className="w-full px-4 py-3 rounded-xl border border-[#29211C]/15 bg-[#FFF8F0]/30 text-[#29211C] text-sm placeholder-[#766D65]/50 focus:outline-none focus:border-[#E85D16] focus:ring-2 focus:ring-[#E85D16]/20 transition-all duration-200"
             />
           </div>

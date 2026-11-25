@@ -2,13 +2,15 @@ import logging
 from django.db import transaction
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, status
+from rest_framework import generics, status, exceptions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import Category, Branch, Menu, OnlinePlatforms, Gallery, Feedback
+from .models import User, Category, Branch, Menu, OnlinePlatforms, Gallery, Feedback
 from .serializers import (
     CategorySerializer,
     BranchSerializer,
@@ -20,6 +22,46 @@ from .serializers import (
 
 from .supabase import upload_image_to_supabase, delete_image_from_supabase
 logger = logging.getLogger(__name__)
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """
+    Flexible admin login serializer:
+    - Accepts username or email (e.g. 'admin' or 'mk165202@gmail.com')
+    - Case-insensitive email lookup
+    - Strips whitespace
+    """
+    username_field = 'email'
+
+    def validate(self, attrs):
+        username_or_email = (attrs.get('email') or attrs.get('username') or '').strip()
+        password = attrs.get('password', '')
+
+        user = None
+        if username_or_email.lower() == 'admin':
+            user = (
+                User.objects.filter(is_superuser=True).first()
+                or User.objects.filter(is_staff=True).first()
+            )
+        if not user:
+            user = User.objects.filter(email__iexact=username_or_email).first()
+        if not user:
+            user = User.objects.filter(name__iexact=username_or_email).first()
+
+        if user and user.check_password(password):
+            if not user.is_active:
+                raise exceptions.AuthenticationFailed('User account is disabled.')
+            refresh = self.get_token(user)
+            return {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }
+
+        raise exceptions.AuthenticationFailed('No active account found with the given credentials')
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
 
 class LogoutView(APIView):
     

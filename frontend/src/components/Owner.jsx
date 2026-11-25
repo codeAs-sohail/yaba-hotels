@@ -13,7 +13,7 @@ export default function Owner() {
 
   useEffect(() => {
     if (!access) {
-      navigate('/home/Yaba7qK29700rest', { replace: true });
+      navigate('/Yaba7qK29700rest', { replace: true });
     }
   }, [access, navigate]);
 

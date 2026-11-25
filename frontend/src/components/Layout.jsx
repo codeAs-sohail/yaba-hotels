@@ -1,5 +1,7 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearTokens } from '../features/auth/authSlice';
 
 const navigation = [
   { name: 'Home', href: '/home' },
@@ -43,8 +45,18 @@ export default function Layout() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen]);
 
-  // If on the owner admin dashboard, bypass customer navbar and footer completely
-  if (location.pathname.startsWith('/owner')) {
+  const dispatch = useDispatch();
+  const { access } = useSelector((state) => state.auth);
+
+  // If leaving /owner and moving to any normal customer page, automatically log out
+  useEffect(() => {
+    if (access && !location.pathname.startsWith('/owner')) {
+      dispatch(clearTokens());
+    }
+  }, [location.pathname, access, dispatch]);
+
+  // If on the owner admin dashboard or secret login page, bypass customer navbar and footer completely
+  if (location.pathname.startsWith('/owner') || location.pathname.includes('Yaba7qK29700rest')) {
     return <Outlet />;
   }
 
