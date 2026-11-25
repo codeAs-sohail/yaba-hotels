@@ -239,7 +239,7 @@ export default function Layout() {
                 <div className="space-y-0.5 text-center sm:text-left">
                   <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#E85D16]">
                     <span>📸</span>
-                    <span>@yabafastfood</span>
+                    <span>@yaba_fast_food</span>
                   </div>
                   <h3 className="font-serif text-sm sm:text-base font-bold text-white tracking-tight leading-snug">
                     Follow Our Kitchen on Instagram
@@ -253,7 +253,7 @@ export default function Layout() {
               {/* Action Button */}
               <div className="flex-shrink-0">
                 <a
-                  href="https://www.instagram.com"
+                  href="https://www.instagram.com/yaba_fast_food?gwpx=MXhydmU0N3dsb2xocw=="
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#E85D16] hover:bg-[#B94720] px-3.5 py-1.5 rounded-lg transition-colors shadow-xs whitespace-nowrap"
