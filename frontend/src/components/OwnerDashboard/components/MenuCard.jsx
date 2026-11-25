@@ -1,4 +1,5 @@
 import React from 'react';
+import { resolveImageUrl } from '../../../api/config';
 
 /**
  * Mobile-first Menu Item Card.
@@ -18,10 +19,15 @@ export default function MenuCard({ item, onEdit, onDelete }) {
         <div className="relative aspect-[16/10] bg-[#141414]/5 overflow-hidden">
           {item.image ? (
             <img
-              src={item.image}
+              src={resolveImageUrl(item.image)}
               alt={item.item}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src =
+                  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"><rect fill="%23FFFBEA" width="300" height="200"/><text fill="%23766D65" font-family="sans-serif" font-size="14" font-weight="bold" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle">Yaba Fast Food</text></svg>';
+              }}
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-[#555555]/50 bg-[#FFFBEA]">

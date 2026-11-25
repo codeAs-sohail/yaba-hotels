@@ -86,6 +86,15 @@ class MenuSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Price must be greater than zero.")
         return value
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        img = ret.get('image')
+        if img and not (img.startswith('http://') or img.startswith('https://')):
+            request = self.context.get('request')
+            if request:
+                ret['image'] = request.build_absolute_uri(img if img.startswith('/') else f'/{img}')
+        return ret
+
     def get_online_platforms(self, obj):
         # Retrieve associated OnlinePlatforms record
         platform = obj.online_platforms.first()
@@ -108,6 +117,15 @@ class GallerySerializer(serializers.ModelSerializer):
     class Meta:
         model = Gallery
         fields = ['id', 'image_link', 'created_at', 'updated_at']
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        link = ret.get('image_link')
+        if link and not (link.startswith('http://') or link.startswith('https://')):
+            request = self.context.get('request')
+            if request:
+                ret['image_link'] = request.build_absolute_uri(link if link.startswith('/') else f'/{link}')
+        return ret
 
 
 class FeedbackSerializer(serializers.ModelSerializer):

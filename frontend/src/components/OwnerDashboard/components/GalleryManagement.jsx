@@ -5,6 +5,8 @@ import {
   useUpdateGalleryMutation,
   useDeleteGalleryMutation,
 } from '../../../features/dashboard/dashboardApi';
+import { useUpload } from '../../../context/UploadContext';
+import { resolveImageUrl } from '../../../api/config';
 
 /**
  * Gallery Management Tab View.
@@ -15,6 +17,7 @@ export default function GalleryManagement() {
   const [createGallery, { isLoading: isCreating }] = useCreateGalleryMutation();
   const [updateGallery, { isLoading: isUpdating }] = useUpdateGalleryMutation();
   const [deleteGallery, { isLoading: isDeleting }] = useDeleteGalleryMutation();
+  const { startUpload } = useUpload();
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [replaceTarget, setReplaceTarget] = useState(null);
@@ -53,19 +56,30 @@ export default function GalleryManagement() {
       return;
     }
 
+    const fileToUpload = selectedFile;
+    const targetToReplace = replaceTarget;
     const formData = new FormData();
-    formData.append('image', selectedFile);
+    formData.append('image', fileToUpload);
+
+    // Close modal immediately so the user can continue navigating freely,
+    // while the async upload runs with the animated circle and progress line.
+    setIsUploadModalOpen(false);
 
     try {
-      if (replaceTarget) {
-        await updateGallery({ id: replaceTarget.id, formData }).unwrap();
-      } else {
-        await createGallery(formData).unwrap();
-      }
-      setIsUploadModalOpen(false);
+      await startUpload({
+        title: targetToReplace ? `Replace Photo #${targetToReplace.id}` : fileToUpload.name,
+        type: 'gallery',
+        file: fileToUpload,
+        task: async () => {
+          if (targetToReplace) {
+            return await updateGallery({ id: targetToReplace.id, formData }).unwrap();
+          } else {
+            return await createGallery(formData).unwrap();
+          }
+        },
+      });
     } catch (err) {
       console.error('Gallery upload error:', err);
-      setErrorMessage(err?.data?.error || 'Failed to upload image. Please try again.');
     }
   };
 
@@ -141,10 +155,15 @@ export default function GalleryManagement() {
               className="relative aspect-square rounded-2xl overflow-hidden bg-[#141414]/5 border border-[#141414]/10 shadow-xs group"
             >
               <img
-                src={img.image_link}
+                src={resolveImageUrl(img.image_link)}
                 alt={`Gallery #${img.id}`}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src =
+                    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect fill="%23FFFBEA" width="300" height="300"/><text fill="%23766D65" font-family="sans-serif" font-size="14" font-weight="bold" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle">Yaba Showcase</text></svg>';
+                }}
               />
 
               {/* Action Overlays */}

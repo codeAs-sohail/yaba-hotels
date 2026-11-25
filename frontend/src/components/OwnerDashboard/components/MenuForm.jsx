@@ -5,6 +5,8 @@ import {
   useGetCategoriesQuery,
   useGetBranchesQuery,
 } from '../../../features/dashboard/dashboardApi';
+import { useUpload } from '../../../context/UploadContext';
+import { resolveImageUrl } from '../../../api/config';
 
 /**
  * Reusable Mobile-first Menu Item Form (Add / Edit).
@@ -24,7 +26,9 @@ export default function MenuForm({ initialData = null, onClose, onSuccess }) {
 
   // Image states
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(initialData?.image || '');
+  const [imagePreview, setImagePreview] = useState(
+    initialData?.image ? resolveImageUrl(initialData.image) : ''
+  );
 
   // Platform toggles & URLs
   const platforms = initialData?.online_platforms || {};
@@ -44,6 +48,7 @@ export default function MenuForm({ initialData = null, onClose, onSuccess }) {
   const { data: branches = [], isLoading: loadingBranches } = useGetBranchesQuery();
   const [createMenu, { isLoading: isCreating }] = useCreateMenuMutation();
   const [updateMenu, { isLoading: isUpdating }] = useUpdateMenuMutation();
+  const { startUpload } = useUpload();
 
   const isSubmitting = isCreating || isUpdating;
 
@@ -138,14 +143,28 @@ export default function MenuForm({ initialData = null, onClose, onSuccess }) {
     formData.append('swiggy', swiggyActive ? swiggyUrl.trim() : '');
     formData.append('ownly', ownlyActive ? ownlyUrl.trim() : '');
 
-    try {
+    const submitTask = async () => {
       if (isEditing) {
-        await updateMenu({ id: initialData.id, formData }).unwrap();
+        return await updateMenu({ id: initialData.id, formData }).unwrap();
       } else {
-        await createMenu(formData).unwrap();
+        return await createMenu(formData).unwrap();
+      }
+    };
+
+    try {
+      if (imageFile) {
+        onClose();
+        await startUpload({
+          title: `Menu Item: ${item.trim()}`,
+          type: 'menu',
+          file: imageFile,
+          task: submitTask,
+        });
+      } else {
+        await submitTask();
+        onClose();
       }
       if (onSuccess) onSuccess();
-      onClose();
     } catch (err) {
       console.error('Menu save error:', err);
       const detail =

@@ -25,3 +25,24 @@ export const getApiBaseUrl = () => {
 };
 
 export const API_BASE_URL = getApiBaseUrl();
+
+/**
+ * Resolves full public URL for media images.
+ * If image is hosted on Supabase (full URL), returns as is.
+ * If image is stored in local media (/media/...), prepends backend origin to avoid 404 on frontend static host.
+ */
+export const resolveImageUrl = (url) => {
+  if (!url) return '';
+  if (
+    url.startsWith('http://') ||
+    url.startsWith('https://') ||
+    url.startsWith('blob:') ||
+    url.startsWith('data:')
+  ) {
+    return url;
+  }
+  const apiBase = getApiBaseUrl();
+  const backendHost = apiBase.replace(/\/api\/?$/, '').replace(/\/+$/, '');
+  const cleanPath = url.startsWith('/') ? url : `/${url}`;
+  return backendHost ? `${backendHost}${cleanPath}` : cleanPath;
+};

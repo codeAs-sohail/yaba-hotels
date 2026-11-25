@@ -7,41 +7,45 @@ import BranchSelection from './components/BranchSelection';
 import CustomerMenu from './components/CustomerMenu';
 import Contact from './components/Contact';
 import Feedback from './components/Feedback';
+import Gallery from './components/Gallery';
 import OwnerLogin from './components/OwnerLogin';
 import Owner from './components/Owner';
+import { UploadProvider } from './context/UploadContext';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route element={<Layout />}>
-          {/* Root redirects to /home */}
-          <Route path="/" element={<Navigate to="/home" replace />} />
+      <UploadProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            {/* Root redirects to /home */}
+            <Route path="/" element={<Navigate to="/home" replace />} />
 
-          {/* Home Route */}
-          <Route path="home" element={<Home />} />
+            {/* Home Route */}
+            <Route path="home" element={<Home />} />
 
-          {/* Owner Login Secret Route (direct top-level route) */}
-          <Route path="Yaba7qK29700rest" element={<OwnerLogin />} />
-          <Route path="home/Yaba7qK29700rest" element={<OwnerLogin />} />
+            {/* Owner Login Secret Route (direct top-level route) */}
+            <Route path="Yaba7qK29700rest" element={<OwnerLogin />} />
+            <Route path="home/Yaba7qK29700rest" element={<OwnerLogin />} />
 
-          {/* Customer Menu Flow */}
-          <Route path="menu" element={<CustomerMenu />} />
-          <Route path="menu/:branchId" element={<CustomerMenu />} />
+            {/* Customer Menu Flow */}
+            <Route path="menu" element={<CustomerMenu />} />
+            <Route path="menu/:branchId" element={<CustomerMenu />} />
 
-          <Route path="branches" element={<Branches />} />
-          <Route path="gallery" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-4xl font-bold text-dark-900">Gallery Page</h1></div>} />
-          <Route path="about" element={<About />} />
-          <Route path="feedback" element={<Feedback />} />
-          <Route path="contact" element={<Contact />} />
+            <Route path="branches" element={<Branches />} />
+            <Route path="gallery" element={<Gallery />} />
+            <Route path="about" element={<About />} />
+            <Route path="feedback" element={<Feedback />} />
+            <Route path="contact" element={<Contact />} />
 
-          {/* Fallback to /home */}
-          <Route path="*" element={<Navigate to="/home" replace />} />
-        </Route>
+            {/* Fallback to /home */}
+            <Route path="*" element={<Navigate to="/home" replace />} />
+          </Route>
 
-        {/* Owner Dashboard (Admin Panel) - Standalone without customer navbar / footer */}
-        <Route path="owner" element={<Owner />} />
-      </Routes>
+          {/* Owner Dashboard (Admin Panel) - Standalone without customer navbar / footer */}
+          <Route path="owner" element={<Owner />} />
+        </Routes>
+      </UploadProvider>
     </Router>
   );
 }

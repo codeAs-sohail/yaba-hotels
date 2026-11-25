@@ -1,10 +1,11 @@
 import time
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse
 from django.db import connection
+from django.views.static import serve
 
 
 def health_check(request):
@@ -48,7 +49,8 @@ urlpatterns = [
     # Django Admin & REST APIs
     path('admin/', admin.site.urls),
     path('api/', include('apps.Hotels.urls')),
+
+    # Serve media files (for local media storage fallback in all environments)
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

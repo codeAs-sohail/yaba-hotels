@@ -5,6 +5,7 @@ import {
   useGetBranchesQuery,
   useGetCategoriesQuery,
 } from '../features/dashboard/dashboardApi';
+import { resolveImageUrl } from '../api/config';
 
 /**
  * Order Online Popup Modal
@@ -67,7 +68,7 @@ function OrderOnlineModal({ isOpen, onClose, item, branchAddress }) {
           <div className="flex items-center gap-3">
             {item.image && (
               <img
-                src={item.image}
+                src={resolveImageUrl(item.image)}
                 alt={itemName}
                 className="w-14 h-14 rounded-2xl object-cover border border-[#141414]/10 shadow-xs flex-shrink-0"
               />
@@ -239,7 +240,7 @@ function MenuItemCard({ item, onOrderOnline }) {
         <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden bg-[#FFF8F0] mb-4 border border-[#141414]/6">
           {item.image ? (
             <img
-              src={item.image}
+              src={resolveImageUrl(item.image)}
               alt={itemName}
               loading="lazy"
               className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
