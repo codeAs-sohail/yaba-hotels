@@ -5,7 +5,7 @@
 export const branchesData = [
   {
     id: "tegal-kunta",
-    name: "Tegal Kunta",
+    name: "Tegal Kunta (Falaknuma)",
     year: 2002,
     note: "Where the Yaba story began.",
     mapUrl: "https://maps.google.com/?q=Yaba+Fast+Food+Tegal+Kunta+Hyderabad"
