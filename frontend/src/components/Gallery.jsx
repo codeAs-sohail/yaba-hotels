@@ -108,8 +108,8 @@ export default function Gallery() {
             </p>
           </header>
 
-          {/* Loading Skeletons */}
-          {(isLoading || isFetching) && (
+          {/* Loading Skeletons - only on initial load, not during background refetch */}
+          {isLoading && (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <div
@@ -121,7 +121,7 @@ export default function Gallery() {
           )}
 
           {/* Empty State */}
-          {!isLoading && !isFetching && gallery.length === 0 && (
+          {!isLoading && gallery.length === 0 && (
             <div className="bg-white/80 backdrop-blur-xs rounded-3xl p-10 sm:p-16 border border-[#141414]/10 text-center max-w-lg mx-auto shadow-sm">
               <div className="w-16 h-16 rounded-2xl bg-[#FFFBEA] border border-[#F2E205] text-3xl flex items-center justify-center mx-auto mb-4">
                 📷
@@ -150,8 +150,8 @@ export default function Gallery() {
             </div>
           )}
 
-          {/* Gallery Photo Grid */}
-          {!isLoading && !isFetching && gallery.length > 0 && (
+          {/* Gallery Photo Grid — show whenever we have data, even during background refetch */}
+          {!isLoading && gallery.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-5">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#766D65]">
@@ -183,7 +183,15 @@ export default function Gallery() {
                         loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
                         onError={(e) => {
+                          // Show a friendly placeholder instead of a blank box
                           e.currentTarget.style.display = 'none';
+                          const parent = e.currentTarget.parentElement;
+                          if (parent && !parent.querySelector('.img-error-placeholder')) {
+                            const placeholder = document.createElement('div');
+                            placeholder.className = 'img-error-placeholder absolute inset-0 flex flex-col items-center justify-center text-[#766D65]/60 gap-2';
+                            placeholder.innerHTML = '<span class="text-3xl">🍽️</span><span class="text-xs font-medium">Photo loading...</span>';
+                            parent.appendChild(placeholder);
+                          }
                         }}
                       />
 

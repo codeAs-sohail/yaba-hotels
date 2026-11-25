@@ -108,6 +108,8 @@ export default function GalleryManagement() {
       });
     } catch (err) {
       console.error('Gallery upload error:', err);
+      const msg = err?.data?.error || err?.message || 'Upload failed. Please try again.';
+      setErrorMessage(msg);
     }
   };
 

@@ -85,22 +85,25 @@ def upload_image_to_supabase(file_obj, folder="menu"):
             if public_url:
                 logger.info(f"Uploaded image to Supabase: {public_url}")
                 return public_url
+            raise Exception("Supabase returned empty public URL after upload.")
         except Exception as e:
-            logger.warning(f"Supabase upload attempt failed: {e}. Falling back to local storage.")
+            logger.error(f"Supabase upload failed: {e}")
+            # Re-raise so the view returns a clear error to the admin.
+            # Silently falling back to local media produces inaccessible URLs
+            # on production (Render's ephemeral filesystem / different domain).
+            raise Exception(f"Image upload to cloud storage failed: {e}") from e
 
-    # Graceful fallback: Save to local media directory
-    try:
-        media_dir = Path(settings.MEDIA_ROOT) / folder
-        media_dir.mkdir(parents=True, exist_ok=True)
-        local_file_path = media_dir / unique_filename
-        with open(local_file_path, 'wb') as f:
-            f.write(file_bytes)
-        local_url = f"{settings.MEDIA_URL}{folder}/{unique_filename}"
-        logger.info(f"Saved image locally at: {local_url}")
-        return local_url
-    except Exception as e:
-        logger.error(f"Failed to save fallback image: {e}")
-        return ""
+    # Supabase not configured — do NOT fall back to local media on production.
+    # Local media is ephemeral on Render and not served cross-domain to yaba.site.
+    logger.error(
+        "Supabase storage is not configured (SUPABASE_URL / SUPABASE_SECRET_KEY missing). "
+        "Image upload cannot proceed without cloud storage."
+    )
+    raise Exception(
+        "Cloud storage is not configured on this server. "
+        "Please contact the administrator to set SUPABASE_URL, SUPABASE_SECRET_KEY, "
+        "and SUPABASE_BUCKET_NAME environment variables."
+    )
 
 
 def delete_image_from_supabase(image_url):

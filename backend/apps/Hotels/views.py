@@ -291,7 +291,10 @@ class GalleryListCreateView(generics.ListCreateAPIView):
                 return Response({'error': str(ve)}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
                 logger.error(f"Gallery upload failed: {e}")
-                return Response({'error': 'Failed to upload image.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response(
+                    {'error': f'Image upload failed: {str(e)}'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         if not data.get('image_link'):
             return Response({'error': 'Please provide an image file.'}, status=status.HTTP_400_BAD_REQUEST)
