@@ -2,7 +2,32 @@ import React, { useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import FoodArcCarousel from './FoodArcCarousel';
+import ScrollReveal from './ScrollReveal';
 import { useGetPublicFeedbacksQuery } from '../features/dashboard/dashboardApi';
+
+const EXPERIENCE_PILLARS = [
+  {
+    number: '01',
+    title: 'Explore Our Menu',
+    description: 'Single & full portions prepared fresh to order across all five Hyderabad outlets.',
+    to: '/menu',
+    cta: 'Browse Dishes',
+  },
+  {
+    number: '02',
+    title: 'Five City Kitchens',
+    description: 'Serving Tegal Kunta, Vattepally, Shahalibanda, Babanagar, and Phool Bagh since 2002.',
+    to: '/branches',
+    cta: 'Find a Branch',
+  },
+  {
+    number: '03',
+    title: 'Inside Yaba Kitchens',
+    description: 'Real dishes, fiery wok stations, and family dining rooms captured from our outlets.',
+    to: '/gallery',
+    cta: 'View Gallery',
+  },
+];
 
 const Home = () => {
   const contentRef = useRef(null);
@@ -11,7 +36,6 @@ const Home = () => {
     refetchOnFocus: true,
   });
 
-  // Subtle, sophisticated entrance animation for hero typography and CTA
   useEffect(() => {
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (isReducedMotion || !contentRef.current) return;
@@ -19,11 +43,11 @@ const Home = () => {
     const ctx = gsap.context(() => {
       gsap.from(contentRef.current.children, {
         opacity: 0,
-        y: 16,
-        duration: 0.8,
-        stagger: 0.12,
+        y: 14,
+        duration: 0.65,
+        stagger: 0.1,
         ease: 'power3.out',
-        delay: 0.15,
+        delay: 0.1,
       });
     }, contentRef);
 
@@ -31,34 +55,35 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FFF8F0] selection:bg-[#E85D16]/15 selection:text-[#E85D16]">
-      {/* Hero Section: Centered arc carousel at top with generous margin and editorial typography directly below */}
-      <section className="relative w-full overflow-x-hidden pt-8 sm:pt-14 lg:pt-20 pb-16 sm:pb-20 lg:pb-24">
-        {/* Food Arc Carousel - Primary Visual Attraction with comfortable top margin */}
-        <div className="w-full flex justify-center mt-3 sm:mt-6 lg:mt-8" aria-label="Featured dishes carousel">
+    <div className="min-h-screen bg-[#FCF9F4] selection:bg-[#E85D16]/15 selection:text-[#E85D16]">
+      {/* Hero Section */}
+      <section className="relative w-full overflow-x-clip pt-6 sm:pt-10 lg:pt-14 pb-12 sm:pb-16 lg:pb-20">
+        {/* Food Arc Carousel */}
+        <div className="w-full flex justify-center mt-2 sm:mt-4" aria-label="Featured dishes carousel">
           <FoodArcCarousel />
         </div>
 
-        {/* Hero Content: Playfair Editorial Heading, DM Sans Tagline & Orange CTA */}
+        {/* Hero Editorial Typography & Primary CTAs */}
         <div
           ref={contentRef}
-          className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center mt-3 sm:mt-4 lg:mt-5"
+          className="relative mx-auto max-w-2xl px-4 sm:px-6 text-center mt-3 sm:mt-5"
         >
-          {/* Main Heading - Playfair Display (52–60px desktop, 34–40px mobile) */}
-          <h1 className="font-serif text-[34px] sm:text-[42px] md:text-[50px] lg:text-[56px] font-semibold text-[#29211C] tracking-tight leading-[1.12] mb-3.5 sm:mb-4">
+          <p className="font-sans text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#E85D16] mb-2.5">
+            Hyderabad’s Authentic Flavours • Since 2002
+          </p>
+
+          <h1 className="font-serif text-[32px] sm:text-[42px] lg:text-[52px] font-semibold text-[#1E1916] tracking-tight leading-[1.12] mb-3.5">
             Taste the Happiness.
           </h1>
 
-          {/* Description - DM Sans (17–19px desktop, 14–16px mobile) */}
-          <p className="font-sans text-[15px] sm:text-[17px] lg:text-[18.5px] text-[#766D65] max-w-2xl mx-auto leading-relaxed mb-7 sm:mb-8">
-            Handcrafted dishes made with love — from smoky tandoors to authentic biryanis, every bite is a celebration.
+          <p className="font-sans text-[15px] sm:text-[17px] text-[#685F57] max-w-xl mx-auto leading-relaxed mb-7">
+            Handcrafted dishes prepared to order — from smoky tandoors and fiery Indo-Chinese woks to Hyderabadi classics.
           </p>
 
-          {/* Explore Menu CTA Button */}
-          <div className="flex justify-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <NavLink
               to="/menu"
-              className="group inline-flex items-center justify-center gap-2.5 h-[52px] sm:h-[56px] px-8 sm:px-9 text-[15px] sm:text-[16px] font-medium sm:font-semibold text-white bg-[#E85D16] hover:bg-[#B94720] rounded-xl shadow-[0_8px_20px_rgba(232,93,22,0.22)] hover:shadow-[0_12px_28px_rgba(232,93,22,0.30)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E85D16] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFF8F0]"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 min-h-[48px] px-8 text-[15px] font-semibold text-white bg-[#E85D16] hover:bg-[#CC4D0D] rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E85D16] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FCF9F4]"
             >
               <span>Explore Menu</span>
               <svg
@@ -68,74 +93,116 @@ const Home = () => {
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
+            </NavLink>
+
+            <NavLink
+              to="/branches"
+              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] px-7 text-[15px] font-semibold text-[#1E1916] bg-white border border-[#E2D8CE] hover:border-[#E85D16] hover:text-[#E85D16] rounded-lg transition-colors"
+            >
+              View Our 5 Branches
             </NavLink>
           </div>
         </div>
       </section>
 
-      {/* Verified Guest Reviews Section (Visible only when reviews are approved by admin) */}
+      {/* Editorial Quick Navigation Pillars */}
+      <section className="py-12 sm:py-16 border-t border-[#E6DDD2] bg-[#FAF5ED]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+            {EXPERIENCE_PILLARS.map((item, idx) => (
+              <ScrollReveal key={item.number} delay={idx * 70}>
+                <Link
+                  to={item.to}
+                  className="group flex flex-col justify-between h-full bg-white rounded-xl p-6 sm:p-7 border border-[#E6DDD2] hover:border-[#E85D16]/60 transition-colors"
+                >
+                  <div>
+                    <span className="font-sans text-xs font-semibold tracking-[0.18em] text-[#E85D16]">
+                      {item.number}
+                    </span>
+                    <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#1E1916] mt-2 mb-2 group-hover:text-[#E85D16] transition-colors">
+                      {item.title}
+                    </h2>
+                    <p className="text-sm text-[#685F57] leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                  <div className="mt-5 pt-4 border-t border-[#F0EAE1] inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#1E1916] group-hover:text-[#E85D16] transition-colors">
+                    <span>{item.cta}</span>
+                    <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+                  </div>
+                </Link>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Verified Guest Reviews Section (Displayed when approved by owner) */}
       {publicFeedbacks.length > 0 && (
-        <section className="py-14 sm:py-20 bg-white border-t border-[#29211C]/8">
+        <section className="py-14 sm:py-20 bg-white border-t border-[#E6DDD2]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <ScrollReveal className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#E85D16] bg-[#E85D16]/10 px-3 py-1 rounded-full">
-                  ★ Genuine Guest Reviews
-                </span>
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#29211C] tracking-tight mt-2.5">
-                  What Our Guests Say
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#E85D16]">
+                  Guest Experiences
+                </p>
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#1E1916] tracking-tight mt-1.5">
+                  Words From Our Tables
                 </h2>
               </div>
               <Link
                 to="/feedback"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#29211C] hover:text-[#E85D16] transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1E1916] hover:text-[#E85D16] transition-colors"
               >
                 <span>Share your experience</span>
-                <span>→</span>
+                <span aria-hidden="true">→</span>
               </Link>
-            </div>
+            </ScrollReveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-              {publicFeedbacks.slice(0, 6).map((fb) => (
-                <div
-                  key={fb.id}
-                  className="bg-[#FFFDF3] border border-[#F3E8B5] rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col justify-between transition-all hover:shadow-md"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <div className="flex items-center text-amber-400 text-sm">
-                        {'★'.repeat(fb.stars)}{'☆'.repeat(5 - fb.stars)}
+              {publicFeedbacks.slice(0, 6).map((fb, idx) => (
+                <ScrollReveal key={fb.id} delay={idx * 60}>
+                  <div className="h-full bg-[#FCF9F4] border border-[#E6DDD2] rounded-xl p-5 sm:p-6 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <div className="flex items-center gap-0.5 text-[#E85D16]" aria-label={`${fb.stars} out of 5 stars`}>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <svg
+                              key={star}
+                              className={`w-4 h-4 ${star <= fb.stars ? 'fill-current' : 'fill-[#DED4C8]'}`}
+                              viewBox="0 0 20 20"
+                              aria-hidden="true"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          ))}
+                        </div>
+                        <span className="text-[11px] font-medium text-[#685F57] truncate max-w-[150px]">
+                          {fb.branch_address ? fb.branch_address.split(',')[0] : 'Hyderabad'}
+                        </span>
                       </div>
-                      <span className="text-[11px] text-[#766D65] font-medium">
-                        📍 {fb.branch_address ? fb.branch_address.split(',')[0] : 'Hyderabad'}
-                      </span>
+
+                      {fb.message ? (
+                        <p className="text-sm text-[#38302A] leading-relaxed line-clamp-4">
+                          “{fb.message}”
+                        </p>
+                      ) : (
+                        <p className="text-xs text-[#685F57] italic">Rated {fb.stars} out of 5 stars</p>
+                      )}
                     </div>
 
-                    {fb.message ? (
-                      <p className="text-sm text-[#3E342B] leading-relaxed italic line-clamp-4">
-                        "{fb.message}"
-                      </p>
-                    ) : (
-                      <p className="text-xs text-gray-400 italic">Rated {fb.stars} stars</p>
-                    )}
+                    <div className="mt-5 pt-3.5 border-t border-[#E6DDD2] flex items-center justify-between">
+                      <span className="font-serif font-medium text-sm text-[#1E1916]">
+                        {fb.name || 'Guest Diner'}
+                      </span>
+                      <span className="text-[11px] font-medium text-[#685F57]">
+                        Verified Diner
+                      </span>
+                    </div>
                   </div>
-
-                  <div className="mt-5 pt-3 border-t border-gray-200/60 flex items-center justify-between">
-                    <span className="font-serif font-bold text-sm text-[#29211C]">
-                      {fb.name || 'Valued Guest'}
-                    </span>
-                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      ✓ Verified Diner
-                    </span>
-                  </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>

@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './components/Home';
 import About from './components/About';
@@ -12,9 +13,20 @@ import OwnerLogin from './components/OwnerLogin';
 import Owner from './components/Owner';
 import { UploadProvider } from './context/UploadContext';
 
+function EnforceDocumentTitle() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    document.title = 'Yaba Hotels';
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <Router>
+      <EnforceDocumentTitle />
       <UploadProvider>
         <Routes>
           <Route element={<Layout />}>

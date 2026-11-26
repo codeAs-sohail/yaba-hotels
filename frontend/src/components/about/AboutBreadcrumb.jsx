@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Semantic Breadcrumb for About Us Page.
+ * Clean Breadcrumb for About Us Page.
  */
 export default function AboutBreadcrumb() {
   return (
@@ -10,22 +10,14 @@ export default function AboutBreadcrumb() {
       aria-label="Breadcrumb"
       className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2"
     >
-      <ol className="flex items-center gap-2 text-xs sm:text-sm text-[#555555]">
+      <ol className="flex items-center gap-2 text-xs text-[#685F57]">
         <li>
-          <Link
-            to="/home"
-            className="hover:text-[#141414] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F2E205] rounded px-1.5 py-0.5 transition-colors font-medium text-[#555555] hover:underline"
-          >
+          <Link to="/home" className="hover:text-[#E85D16] transition-colors">
             Home
           </Link>
         </li>
-        <li aria-hidden="true" className="text-[#141414]/30 select-none">
-          /
-        </li>
-        <li
-          aria-current="page"
-          className="font-semibold text-[#141414] px-1.5 py-0.5"
-        >
+        <li aria-hidden="true" className="text-[#DED4C8]">/</li>
+        <li aria-current="page" className="font-semibold text-[#1E1916]">
           About Us
         </li>
       </ol>
